@@ -1,0 +1,19 @@
+# Configuration settings for database connection
+#
+# host: The hostname or IP address of the database server.
+# port: The port number on which the database server is listening.
+# databaseName: The name of the database to connect to.
+# tableCreation: The mode for table creation (e.g., 'update' or 'create').
+# username: The username used to authenticate with the database server.
+# password: The password used to authenticate with the database server.
+# showSQL: Whether to show SQL statements (e.g., 'true' or 'false').
+# entityAnnotatedClassParentPath: The parent path for entity annotated classes.
+
+host: 'localhost'
+port: 3306
+databaseName: 'aomultiverse'
+tableCreation: 'update'
+username: 'root'
+password: ''
+showSQL: 'false'
+entityAnnotatedClassParentPath: 'database.entities'
