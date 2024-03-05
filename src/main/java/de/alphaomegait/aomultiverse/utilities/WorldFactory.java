@@ -1,7 +1,5 @@
 package de.alphaomegait.aomultiverse.utilities;
 
-import com.google.common.io.PatternFilenameFilter;
-import de.alphaomegait.ao18n.AO18n;
 import de.alphaomegait.ao18n.I18n;
 import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.EAOMultiverseWorldType;
@@ -13,15 +11,10 @@ import net.kyori.adventure.util.TriState;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
-import org.bukkit.util.FileUtil;
 import org.codehaus.plexus.util.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
@@ -29,16 +22,16 @@ import java.util.logging.Logger;
 
 public class WorldFactory {
 
-	private final AOMultiverse aoMultiverse;
+	private final AOMultiverse       aoMultiverse;
 	private final MultiverseWorldDao multiverseWorldDao;
-	private final Logger logger;
+	private final Logger             logger;
 
 	public WorldFactory(
 		final @NotNull AOMultiverse aoMultiverse,
 		final @NotNull Logger logger
 	) {
-		this.aoMultiverse = aoMultiverse;
-		this.logger = logger;
+		this.aoMultiverse       = aoMultiverse;
+		this.logger             = logger;
 		this.multiverseWorldDao = new MultiverseWorldDao(this.aoMultiverse);
 	}
 
@@ -63,7 +56,7 @@ public class WorldFactory {
 			"aomultiverse.creating-world",
 			player
 		).hasPrefix(true).build().sendMessageAsComponent();
-		
+
 		CompletableFuture.supplyAsync(() -> {
 			if (worldType.equals(EAOMultiverseWorldType.VOID)) {
 				return new WorldCreator(worldName)
@@ -76,43 +69,46 @@ public class WorldFactory {
 				return new WorldCreator(worldName)
 					.keepSpawnLoaded(TriState.TRUE);
 			}
-		}).whenCompleteAsync(((worldCreator, throwable) -> {
-			if (
-				throwable != null
-			) return;
+		}).whenCompleteAsync((
+													 (worldCreator, throwable) -> {
+														 if (
+															 throwable != null
+														 ) return;
 
-			Bukkit.getScheduler().runTask(
-				this.aoMultiverse,
-				() -> {
-					final World createdWorld = worldCreator.createWorld();
+														 Bukkit.getScheduler().runTask(
+															 this.aoMultiverse,
+															 () -> {
+																 final World createdWorld = worldCreator.createWorld();
 
-					if (createdWorld == null) {
-						new I18n.Builder(
-							"aomultiverse.world-creation-failed",
-							player
-						).hasPrefix(true)
-						 .setArgs(worldName)
-						 .build()
-						 .sendMessageAsComponent();
-						return;
-					}
+																 if (createdWorld == null) {
+																	 new I18n.Builder(
+																		 "aomultiverse.world-creation-failed",
+																		 player
+																	 ).hasPrefix(true)
+																		.setArgs(worldName)
+																		.build()
+																		.sendMessageAsComponent();
+																	 return;
+																 }
 
-					final MultiverseWorld multiverseWorld = new MultiverseWorld(
-						createdWorld,
-						worldType
-					);
+																 final MultiverseWorld multiverseWorld = new MultiverseWorld(
+																	 createdWorld,
+																	 worldType
+																 );
 
-					this.multiverseWorldDao.persistEntity(multiverseWorld);
+																 this.multiverseWorldDao.persistEntity(multiverseWorld);
 
-					new I18n.Builder(
-						"aomultiverse.world-created",
-						player
-					).hasPrefix(true)
-					 .setArgs(worldName)
-					 .build()
-					 .sendMessageAsComponent();
-			});
-		})).join();
+																 new I18n.Builder(
+																	 "aomultiverse.world-created",
+																	 player
+																 ).hasPrefix(true)
+																	.setArgs(worldName)
+																	.build()
+																	.sendMessageAsComponent();
+															 }
+														 );
+													 }
+												 )).join();
 	}
 
 	public void deleteWorld(
@@ -130,7 +126,7 @@ public class WorldFactory {
 			).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
 			return;
 		}
-		
+
 		new I18n.Builder(
 			"aomultiverse.deleting-world",
 			player
@@ -147,7 +143,10 @@ public class WorldFactory {
 		}
 
 		try {
-			Bukkit.unloadWorld(world, false);
+			Bukkit.unloadWorld(
+				world,
+				false
+			);
 			FileUtils.deleteDirectory(world.getWorldFolder());
 
 			final Optional<MultiverseWorld> multiverseWorld = this.multiverseWorldDao.findByName(world.getName());
@@ -163,7 +162,7 @@ public class WorldFactory {
 		) {
 			this.logger.log(
 				Level.WARNING,
-			"Failed to delete the world: " + worldName,
+				"Failed to delete the world: " + worldName,
 				exception
 			);
 			new I18n.Builder(
@@ -199,5 +198,25 @@ public class WorldFactory {
 	public void loadExistingWorlds(
 
 	) {
+		this.logger.info("Loading existing worlds...");
+
+		this.multiverseWorldDao.findAll().forEach(multiverseWorld -> {
+			if (
+				multiverseWorld.getWorldType().equalsIgnoreCase(EAOMultiverseWorldType.VOID.name())
+			) {
+				new WorldCreator(
+					multiverseWorld.getWorldName()
+				).generator(
+					 new VoidChunkGenerator()
+				 ).biomeProvider(
+					 new VoidBiomeProvider()
+				 ).keepSpawnLoaded(TriState.TRUE)
+				 .createWorld();
+			} else {
+				new WorldCreator(multiverseWorld.getWorldName()).keepSpawnLoaded(TriState.TRUE).createWorld();
+			}
+
+			this.logger.info("Loaded world: " + multiverseWorld.getWorldName() + " with type: " + multiverseWorld.getWorldType());
+		});
 	}
 }

@@ -3,6 +3,7 @@ package de.alphaomegait.aomultiverse;
 import de.alphaomegait.ao18n.AO18n;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.AOMultiverseCommand;
 import de.alphaomegait.aomultiverse.commands.spawn.AOSpawnCommand;
+import de.alphaomegait.aomultiverse.utilities.WorldFactory;
 import de.alphaomegait.woocore.WooCore;
 import de.alphaomegait.woocore.dependencies.LibraryLoader;
 import de.alphaomegait.woocore.enums.GPADependency;
@@ -24,11 +25,7 @@ import java.util.logging.Logger;
 
 public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 
-	private AutoWirer autoWirer;
-
 	private WooCore wooCore;
-
-	private ConfigManager configManager;
 
 	private final Logger logger = Logger.getLogger("AOMultiverse");
 
@@ -67,8 +64,8 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	public void onEnable() {
 		final long beginTimestamp = System.nanoTime();
 
-		this.autoWirer = new AutoWirer();
-		this.autoWirer
+		AutoWirer autoWirer = new AutoWirer();
+		autoWirer
 			.addExistingSingleton(this)
 			.addExistingSingleton(this.logger)
 			.addSingleton(ConfigManager.class)
@@ -101,6 +98,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 				);
 			});
 
+		new WorldFactory(this, this.logger).loadExistingWorlds();
 
 		this.logger.info("AOMultiverse has been enabled!");
 	}
@@ -127,9 +125,5 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	@Override
 	public Logger getLogger() {
 		return this.logger;
-	}
-
-	public ConfigManager getConfigManager() {
-		return this.configManager;
 	}
 }
