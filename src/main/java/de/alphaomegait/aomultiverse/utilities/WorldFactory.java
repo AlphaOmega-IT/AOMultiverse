@@ -59,7 +59,7 @@ public class WorldFactory {
 
 		CompletableFuture.supplyAsync(() -> {
 			if (worldType.equals(EAOMultiverseWorldType.VOID)) {
-				return new WorldCreator(worldName)
+				return new WorldCreator(worldName + "-" + EAOMultiverseWorldType.VOID.name())
 					.generator(
 						new VoidChunkGenerator()
 					)
