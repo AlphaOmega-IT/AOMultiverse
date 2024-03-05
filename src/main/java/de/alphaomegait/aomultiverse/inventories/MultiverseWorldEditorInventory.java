@@ -12,9 +12,9 @@ import de.alphaomegait.woocore.invhandler.content.InvProvider;
 import de.alphaomegait.woocore.utilities.AnvilFactory;
 import de.alphaomegait.woocore.utilities.ItemBuildable;
 import net.wesjd.anvilgui.AnvilGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,14 +34,14 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 	) {
 		this.aoMultiverse       = aoMultiverse;
 		this.multiverseWorldDao = new MultiverseWorldDao(this.aoMultiverse);
-		this.multiverseWorld = this.multiverseWorldDao.findByName(worldName).orElseThrow(() -> {
-			player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+		this.multiverseWorld = this.multiverseWorldDao.findByName(worldName).orElseGet(() -> {
 
 			new I18n.Builder(
 				"aomultiverse.world-doesnt-exist",
 				player
 			).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
-			return null;
+
+			return new MultiverseWorld();
 		});
 	}
 
@@ -75,6 +75,13 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 	) {
 		invContents.fill(AOCItem.empty());
 
+		if (this.multiverseWorld.getId() == null) {
+			Bukkit.getScheduler().runTaskLater(this.aoMultiverse, () -> {
+				invContents.inv().close(player);
+			}, 1L);
+			return;
+		}
+
 		invContents.set(
 			1,
 			1,
@@ -103,7 +110,7 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 						"aomultiverse.edit-world-inventory-title.spawnpoint-set",
 						player
 					).setArgs(this.multiverseWorld.getSpawnLocation().toString())
-					 .build().sendMessageAsComponent();
+					 .hasPrefix(true).build().sendMessageAsComponent();
 				}
 			)
 		);
@@ -118,18 +125,12 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.is-global-spawn-name",
 						player
-					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ?
-										"✓" :
-										"✗")
-					 .build().displayMessageAsComponent()
+					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ? "✓" : "✗").build().displayMessageAsComponent()
 				).setLore(
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.is-global-spawn-name",
 						player
-					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ?
-										"✓" :
-										"✗")
-					 .build().displayMessages()
+					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ? "✓" : "✗").build().displayMessages()
 				).build(),
 				event -> {
 					final Optional<MultiverseWorld> globalSpawn = this.multiverseWorldDao.getGlobalSpawn();
@@ -141,7 +142,7 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 						new I18n.Builder(
 							"aomultiverse.edit-world-inventory-title.global-spawn-already-set",
 							player
-						).setArgs(globalSpawn.get().getWorldName()).build().sendMessageAsComponent();
+						).setArgs(globalSpawn.get().getWorldName()).hasPrefix(true).build().sendMessageAsComponent();
 						return;
 					}
 
@@ -151,9 +152,8 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.global-spawn-set",
 						player
-					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ?
-										"✓" :
-										"✗")
+					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ? "✓" : "✗")
+					 .hasPrefix(true)
 					 .build().sendMessageAsComponent();
 
 					invContents.inv().close(player);
@@ -171,17 +171,13 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.nether-allowed-name",
 						player
-					).setArgs(this.multiverseWorld.getAllowNether() ?
-										"✓" :
-										"✗")
+					).setArgs(this.multiverseWorld.getAllowNether() ? "✓" : "✗")
 					 .build().displayMessageAsComponent()
 				).setLore(
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.nether-allowed-lore",
 						player
-					).setArgs(this.multiverseWorld.getAllowNether() ?
-										"✓" :
-										"✗")
+					).setArgs(this.multiverseWorld.getAllowNether() ? "✓" : "✗")
 					 .build().displayMessages()
 				).build(),
 				event -> {
@@ -191,10 +187,10 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.nether-allowed-set",
 						player
-					).setArgs(this.multiverseWorld.getAllowNether() ?
-										"✓" :
-										"✗")
-					 .build().sendMessageAsComponent();
+					).hasPrefix(true)
+					 .setArgs(this.multiverseWorld.getAllowNether() ? "✓" : "✗")
+					 .build()
+					 .sendMessageAsComponent();
 
 					invContents.inv().close(player);
 				}
@@ -211,17 +207,12 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.end-allowed-name",
 						player
-					).setArgs(this.multiverseWorld.getAllowTheEnd() ?
-										"✓" :
-										"✗")
-					 .build().displayMessageAsComponent()
+					).setArgs(this.multiverseWorld.getAllowTheEnd() ? "✓" : "✗").build().displayMessageAsComponent()
 				).setLore(
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.end-allowed-lore",
 						player
-					).setArgs(this.multiverseWorld.getAllowTheEnd() ?
-										"✓" :
-										"✗")
+					).setArgs(this.multiverseWorld.getAllowTheEnd() ? "✓" : "✗")
 					 .build().displayMessages()
 				).build(),
 				event -> {
@@ -231,9 +222,8 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.end-allowed-set",
 						player
-					).setArgs(this.multiverseWorld.getAllowTheEnd() ?
-										"✓" :
-										"✗")
+					).hasPrefix(true)
+					 .setArgs(this.multiverseWorld.getAllowTheEnd() ? "✓" : "✗")
 					 .build().sendMessageAsComponent();
 
 					invContents.inv().close(player);
@@ -303,7 +293,7 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 									AnvilGUI.ResponseAction.close()
 								);
 							}
-						);
+						).open(player);
 
 					invContents.inv().close(player);
 				}
@@ -336,8 +326,10 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.allowed-pvp-set",
 						player
-					).setArgs(this.multiverseWorld.getAllowPVP() ? "✓" : "✗")
-					 .build().sendMessageAsComponent();
+					).hasPrefix(true)
+					 .setArgs(this.multiverseWorld.getAllowPVP() ? "✓" : "✗")
+					 .build()
+					 .sendMessageAsComponent();
 
 					invContents.inv().close(player);
 				}

@@ -110,7 +110,7 @@ translations:
       - '<gray>Global Spawnpunkt: <yellow>{0}</yellow></gray>'
       - '</gray>To deactivate or activate the global spawnpoint,</gray>'
       - '<gray>click here.</gray>'
-  aomultiverse.edit-world-inventory-title.is-global-spawn-set:
+  aomultiverse.edit-world-inventory-title.global-spawn-set:
     de:
       - '<gray>Globaler Spawnpunkt</gray> <yellow>{0}</yellow><gray>.</gray>'
     en:
@@ -134,7 +134,7 @@ translations:
       - '<gray>Klicke hier, um den Nether zu de- bzw. aktivieren.</gray>'
     en:
       - '<gray>Click here to deactivate or activate the nether.</gray>'
-  aomultiverse.edit-world-inventory-title.end-allowed-set:
+  aomultiverse.edit-world-inventory-title.nether-allowed-set:
     de:
       - '<gray>der Status das Ende hat sich zu</gray> <yellow>{0}</yellow> <gray>verändert.</gray>'
     en:
@@ -149,6 +149,11 @@ translations:
       - '<gray>Klicke hier, um den Ende zu de- bzw. aktivieren.</gray>'
     en:
       - '<gray>Click here to deactivate or activate the end.</gray>'
+  aomultiverse.edit-world-inventory-title.end-allowed-set:
+    de:
+      - '<gray>der Status das Ende hat sich zu</gray> <yellow>{0}</yellow> <gray>verändert.</gray>'
+    en:
+      - '<gray>The status of the end has changed to</gray> <yellow>{0}</yellow><gray>.</gray>'
   aomultiverse.edit-world-inventory-title.world-size-name:
     de:
       - '<gray>Aktuelle Weltgröße:</gray> <yellow>{0}</yellow>'
