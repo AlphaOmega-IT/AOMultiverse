@@ -64,6 +64,20 @@
 			<groupId>me.blvckbytes</groupId>
 			<artifactId>BukkitCommands</artifactId>
 			<version>0.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.yaml</groupId>
+					<artifactId>snakeyaml</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.code.gson</groupId>
+					<artifactId>gson</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.kyori</groupId>
+					<artifactId>adventure-text-minimessage</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
   </dependencies>
 
