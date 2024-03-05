@@ -52,6 +52,13 @@ public class AOMultiverseCommand extends PlayerCommand {
 			);
 	}
 
+	/**
+	 * A method that handles player invocation with various actions and permissions.
+	 *
+	 * @param  player  the player invoking the method
+	 * @param  label   the label associated with the invocation
+	 * @param  args    an array of strings containing arguments for the invocation
+	 */
 	@Override
 	protected void onPlayerInvocation(
 		final Player player,
@@ -132,6 +139,14 @@ public class AOMultiverseCommand extends PlayerCommand {
 		}
 	}
 
+	/**
+	 * A description of the entire Java function.
+	 *
+	 * @param  commandSender	description of parameter
+	 * @param  label	description of parameter
+	 * @param  args	description of parameter
+	 * @return         	description of return value
+	 */
 	@Override
 	protected List<String> onTabComplete(
 		final CommandSender commandSender,
@@ -178,6 +193,13 @@ public class AOMultiverseCommand extends PlayerCommand {
 		return new ArrayList<>();
 	}
 
+	/**
+	 * Create a new world.
+	 *
+	 * @param  worldName  the name of the world to create
+	 * @param  worldType  the type of the world to create
+	 * @param  player     the player initiating the creation of the world
+	 */
 	private void create(
 		final @NotNull String worldName,
 		final @NotNull EAOMultiverseWorldType worldType,
@@ -190,6 +212,12 @@ public class AOMultiverseCommand extends PlayerCommand {
 		);
 	}
 
+	/**
+	 * A description of the entire Java function.
+	 *
+	 * @param  worldName	description of parameter
+	 * @param  player	    description of parameter
+	 */
 	private void delete(
 		final @NotNull String worldName,
 		final @NotNull Player player
@@ -200,6 +228,12 @@ public class AOMultiverseCommand extends PlayerCommand {
 		);
 	}
 
+	/**
+	 * A method to teleport a player to a specified world.
+	 *
+	 * @param  worldName  the name of the world to teleport to
+	 * @param  player     the player to teleport
+	 */
 	private void teleport(
 		final @NotNull String worldName,
 		final @NotNull Player player
@@ -210,6 +244,11 @@ public class AOMultiverseCommand extends PlayerCommand {
 		);
 	}
 
+	/**
+	 * Sends help to the specified player.
+	 *
+	 * @param  player	the player to send help to
+	 */
 	private void sendHelp(
 		final @NotNull Player player
 	) {

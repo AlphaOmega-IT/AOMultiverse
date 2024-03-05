@@ -9,7 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VoidBiomeProvider extends BiomeProvider {
-	
+
+	/**
+	 * A description of the entire Java function.
+	 *
+	 * @param  info	description of parameter
+	 * @param  x	    description of parameter
+	 * @param  y	    description of parameter
+	 * @param  z	    description of parameter
+	 * @return        description of return value
+	 */
 	@Override
 	public @NotNull Biome getBiome(
 		@NotNull final WorldInfo info,

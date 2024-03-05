@@ -35,6 +35,13 @@ public class WorldFactory {
 		this.multiverseWorldDao = new MultiverseWorldDao(this.aoMultiverse);
 	}
 
+	/**
+	 * A method to create a new world in the game.
+	 *
+	 * @param  worldName  the name of the world to be created
+	 * @param  worldType  the type of world to be created
+	 * @param  player     the player triggering the world creation
+	 */
 	public void createWorld(
 		final @NotNull String worldName,
 		final @NotNull EAOMultiverseWorldType worldType,
@@ -111,6 +118,12 @@ public class WorldFactory {
 												 )).join();
 	}
 
+	/**
+	 * Deletes the specified world if it exists and is empty of players. Sends appropriate messages to the player based on the result of the deletion attempt.
+	 *
+	 * @param  worldName  the name of the world to be deleted
+	 * @param  player     the player initiating the world deletion
+	 */
 	public void deleteWorld(
 		final @NotNull String worldName,
 		final @NotNull Player player
@@ -172,6 +185,12 @@ public class WorldFactory {
 		}
 	}
 
+	/**
+	 * Teleports the specified player to the specified world.
+	 *
+	 * @param  worldName  the name of the world to teleport the player to
+	 * @param  player     the player to teleport
+	 */
 	public void teleport(
 		final @NotNull String worldName,
 		final @NotNull Player player
@@ -195,6 +214,9 @@ public class WorldFactory {
 		).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
 	}
 
+	/**
+	 * Loads all existing worlds from the folder.
+	 */
 	public void loadExistingWorlds(
 
 	) {

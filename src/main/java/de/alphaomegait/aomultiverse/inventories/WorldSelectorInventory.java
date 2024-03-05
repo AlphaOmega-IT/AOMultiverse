@@ -31,6 +31,12 @@ public class WorldSelectorInventory implements InvProvider {
 		this.worlds.sort(Comparator.comparing(World::getName));
 	}
 
+	/**
+	 * Get the inventory for a player.
+	 *
+	 * @param  player  the player for whom the inventory is being retrieved
+	 * @return         the inventory for the player
+	 */
 	@Override
 	public AOInv getInventory(final Player player) {
 		return
@@ -56,6 +62,12 @@ public class WorldSelectorInventory implements InvProvider {
 				.build();
 	}
 
+	/**
+	 * A method to initialize the player and inventory contents.
+	 *
+	 * @param  player       the player object
+	 * @param  invContents  the inventory contents object
+	 */
 	@Override
 	public void init(
 		final Player player,
@@ -107,6 +119,6 @@ public class WorldSelectorInventory implements InvProvider {
 		final Player player,
 		final InvContents invContents
 	) {
-
+		//NOT NEEDED
 	}
 }

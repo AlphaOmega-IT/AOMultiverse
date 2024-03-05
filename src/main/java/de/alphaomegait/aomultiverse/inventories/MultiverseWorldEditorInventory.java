@@ -44,6 +44,12 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 		});
 	}
 
+	/**
+	 * Get the inventory for a player.
+	 *
+	 * @param  player	The player for whom the inventory is being retrieved
+	 * @return        	The inventory for the player
+	 */
 	@Override
 	public AOInv getInventory(final Player player) {
 		return
@@ -67,6 +73,12 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 				.build();
 	}
 
+	/**
+	 * A method to initialize the player and inventory contents.
+	 *
+	 * @param  player       the player object
+	 * @param  invContents  the inventory contents object
+	 */
 	@Override
 	public void init(
 		final Player player,
@@ -323,6 +335,9 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 		//NOT NEEDED
 	}
 
+	/**
+	 * Update the multiverse world.
+	 */
 	private void updateMultiverseWorld() {
 		this.multiverseWorldDao.update(
 			this.multiverseWorld,

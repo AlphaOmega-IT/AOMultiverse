@@ -25,6 +25,12 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 		this.logger = aoMultiverse.getLogger();
 	}
 
+	/**
+	 * Finds a MultiverseWorld by name.
+	 *
+	 * @param  worldName   the name of the world to find
+	 * @return             an Optional containing the found MultiverseWorld, or empty if not found
+	 */
 	public Optional<MultiverseWorld> findByName(
 		final @NotNull String worldName
 	) {
@@ -40,6 +46,12 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 			);
 	}
 
+	/**
+	 * Finds MultiverseWorld by type.
+	 *
+	 * @param  worldType  the type of the world to find
+	 * @return            a list of MultiverseWorld objects matching the given type
+	 */
 	public List<MultiverseWorld> findByType(
 		final @NotNull String worldType
 	) {
@@ -53,6 +65,11 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 				.getResultList();
 	}
 
+	/**
+	 * Find all MultiverseWorlds
+	 *
+	 * @return         list of MultiverseWorld objects
+	 */
 	public List<MultiverseWorld> findAll() {
 		return
 			this
@@ -60,6 +77,11 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 				.getResultList();
 	}
 
+	/**
+	 * Retrieves the global spawn location of the MultiverseWorld entity.
+	 *
+	 * @return         	an Optional containing the global spawn MultiverseWorld, if present
+	 */
 	public Optional<MultiverseWorld> getGlobalSpawn() {
 		return
 			Optional.ofNullable(
@@ -69,6 +91,12 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 			);
 	}
 
+	/**
+	 * Updates the MultiverseWorld entity with the given id.
+	 *
+	 * @param  multiverseWorld   the MultiverseWorld entity to be updated
+	 * @param  id                the id of the MultiverseWorld entity
+	 */
 	public void update(
 		final @NotNull MultiverseWorld multiverseWorld,
 		final long id
@@ -133,6 +161,11 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 		}
 	}
 
+	/**
+	 * A description of the entire Java function.
+	 *
+	 * @return         	description of return value
+	 */
 	@Override
 	protected Class<MultiverseWorld> getClazzType() {
 		return MultiverseWorld.class;
