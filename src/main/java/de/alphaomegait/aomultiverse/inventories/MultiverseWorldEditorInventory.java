@@ -9,7 +9,6 @@ import de.alphaomegait.woocore.invhandler.AOInv;
 import de.alphaomegait.woocore.invhandler.InvManager;
 import de.alphaomegait.woocore.invhandler.content.InvContents;
 import de.alphaomegait.woocore.invhandler.content.InvProvider;
-import de.alphaomegait.woocore.utilities.AnvilFactory;
 import de.alphaomegait.woocore.utilities.ItemBuildable;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
@@ -180,20 +179,7 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					).setArgs(this.multiverseWorld.getAllowNether() ? "✓" : "✗")
 					 .build().displayMessages()
 				).build(),
-				event -> {
-					this.multiverseWorld.setAllowNether(! this.multiverseWorld.getAllowNether());
-					this.updateMultiverseWorld();
-
-					new I18n.Builder(
-						"aomultiverse.edit-world-inventory-title.nether-allowed-set",
-						player
-					).hasPrefix(true)
-					 .setArgs(this.multiverseWorld.getAllowNether() ? "✓" : "✗")
-					 .build()
-					 .sendMessageAsComponent();
-
-					invContents.inv().close(player);
-				}
+				event -> {}
 			)
 		);
 
@@ -212,22 +198,9 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.end-allowed-lore",
 						player
-					).setArgs(this.multiverseWorld.getAllowTheEnd() ? "✓" : "✗")
-					 .build().displayMessages()
+					).build().displayMessages()
 				).build(),
-				event -> {
-					this.multiverseWorld.setAllowTheEnd(! this.multiverseWorld.getAllowTheEnd());
-					this.updateMultiverseWorld();
-
-					new I18n.Builder(
-						"aomultiverse.edit-world-inventory-title.end-allowed-set",
-						player
-					).hasPrefix(true)
-					 .setArgs(this.multiverseWorld.getAllowTheEnd() ? "✓" : "✗")
-					 .build().sendMessageAsComponent();
-
-					invContents.inv().close(player);
-				}
+				event -> {}
 			)
 		);
 
@@ -251,50 +224,55 @@ public class MultiverseWorldEditorInventory implements InvProvider {
 					 .build().displayMessages()
 				).build(),
 				event -> {
-					new AnvilFactory()
-						.getAnvil(
-							new ItemBuildable.Builder(
-								Material.BARRIER
-							).build(),
-							this.aoMultiverse,
+					new AnvilGUI.Builder()
+						.title(
 							new I18n.Builder(
 								"aomultiverse.edit-world-inventory-title.world-size-title",
 								player
 							).build().displayMessage()
-						).onClick(
-							(slot, stateSnapshot) -> {
-								if (
-									slot != AnvilGUI.Slot.OUTPUT
-								) return new ArrayList<>();
+						)
+						.itemLeft(
+							new ItemBuildable.Builder(
+								Material.BARRIER
+							).setName("").build()
+						)
+						.plugin(this.aoMultiverse)
+						.onClick(
+						(slot, stateSnapshot) -> {
+							if (
+								slot != AnvilGUI.Slot.OUTPUT
+							) return new ArrayList<>();
 
-								long size;
+							long size;
 
-								try {
-									size = Long.parseLong(stateSnapshot.getText());
-								} catch (
-									final NumberFormatException exception
-								) {
-									new I18n.Builder(
-										"aomultiverse.edit-world-inventory-title.world-size-invalid",
-										player
-									).setArgs(stateSnapshot.getText()).hasPrefix(true).build().sendMessageAsComponent();
-									return new ArrayList<>();
-								}
-								this.multiverseWorld.setWorldSize(
-									size
-								);
-
-								this.updateMultiverseWorld();
+							try {
+								size = Long.parseLong(stateSnapshot.getText());
+							} catch (
+								final NumberFormatException exception
+							) {
 								new I18n.Builder(
-									"aomultiverse.edit-world-inventory-title.world-size-set",
+									"aomultiverse.edit-world-inventory-title.world-size-invalid",
 									player
-								).setArgs(String.valueOf(size)).hasPrefix(true).build().sendMessageAsComponent();
-								return List.of(
-									AnvilGUI.ResponseAction.close()
-								);
+								).setArgs(stateSnapshot.getText()).hasPrefix(true).build().sendMessageAsComponent();
+								return new ArrayList<>();
 							}
-						).open(player);
+							this.multiverseWorld.setWorldSize(
+								size
+							);
 
+							if (size > 0)
+								Bukkit.getWorld(this.multiverseWorld.getWorldName()).getWorldBorder().setSize(size);
+
+							this.updateMultiverseWorld();
+							new I18n.Builder(
+								"aomultiverse.edit-world-inventory-title.world-size-set",
+								player
+							).setArgs(String.valueOf(size)).hasPrefix(true).build().sendMessageAsComponent();
+							return List.of(
+								AnvilGUI.ResponseAction.close()
+							);
+						}
+					).open(player);
 					invContents.inv().close(player);
 				}
 			)

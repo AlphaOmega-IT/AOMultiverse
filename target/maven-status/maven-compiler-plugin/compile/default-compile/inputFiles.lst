@@ -6,10 +6,13 @@ C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultive
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\AOMultiverse.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\voidworldgenerator\VoidBlockPopulator.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\utilities\WorldFactory.java
+C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\commands\spawn\AOSpawnCommandSection.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\commands\aomultiverse\AOMultiverseCommand.java
+C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\commands\spawn\EAOSpawnPermissionNode.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\database\entities\MultiverseWorld.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\commands\aomultiverse\EAOMultiverseWorldType.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\database\daos\MultiverseWorldDao.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\inventories\MultiverseWorldEditorInventory.java
+C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\commands\spawn\AOSpawnCommand.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\database\entities\heads\WorldHead.java
 C:\Users\Justin\Desktop\Git\AOMultiverse\src\main\java\de\alphaomegait\aomultiverse\voidworldgenerator\VoidChunkGenerator.java

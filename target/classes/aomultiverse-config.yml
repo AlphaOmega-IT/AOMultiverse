@@ -17,6 +17,17 @@ commands:
         iter_cat(constant_names, (constant_name) => "&c" & constant_name, "&7, ", "&cNo values available") &
         "&7)"
       internalError$: 'lut["prefix"] & "&4An internal error occurred"'
+  spawn:
+    name: 'spawn'
+    description: 'Teleport yourself to the spawn'
+    aliases:
+      - aospawn
+      - aos
+    usage: 'spawn'
+    argumentUsages:
+      1$: 'lut["prefix"] & "&7/" & alias & "&7"'
+    errorMessages:
+      internalError$: 'lut["prefix"] & "&4An internal error occurred"'
       
 permissions:
   missingMessage$: 'lut["prefix"] & "You\sre lacking the permission: " & permission'
@@ -27,6 +38,8 @@ permissions:
       edit-world: aomultiverse.edit-world
       delete-world: aomultiverse.delete-world
       teleport: aomultiverse.teleport
+      spawn: aomultiverse.spawn
+      set-spawn: aomultiverse.setspawn
       
 lut:
   prefix: '&8[&5AOMultiverse&8] &7'

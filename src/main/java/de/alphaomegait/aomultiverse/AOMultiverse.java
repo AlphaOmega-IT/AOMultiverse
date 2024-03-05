@@ -2,6 +2,7 @@ package de.alphaomegait.aomultiverse;
 
 import de.alphaomegait.ao18n.AO18n;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.AOMultiverseCommand;
+import de.alphaomegait.aomultiverse.commands.spawn.AOSpawnCommand;
 import de.alphaomegait.woocore.WooCore;
 import de.alphaomegait.woocore.dependencies.LibraryLoader;
 import de.alphaomegait.woocore.enums.GPADependency;
@@ -23,17 +24,16 @@ import java.util.logging.Logger;
 
 public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 
-	private static AOMultiverse instance;
-
 	private AutoWirer autoWirer;
 
 	private WooCore wooCore;
+
+	private ConfigManager configManager;
 
 	private final Logger logger = Logger.getLogger("AOMultiverse");
 
 	@Override
 	public void onLoad() {
-		instance = this;
 
 		if (
 			this.getDataFolder().mkdir()
@@ -74,6 +74,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			.addSingleton(ConfigManager.class)
 			.addSingleton(PluginFileHandler.class)
 			.addSingleton(AOMultiverseCommand.class)
+			.addSingleton(AOSpawnCommand.class)
 			.addInstantiationListener(
 				Command.class,
 				(command, dependencies) -> {
@@ -113,7 +114,8 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	public String[] getConfigPaths() {
 		return new String[] {
 			"database-config.yml",
-			"aomultiverse-config.yml"
+			"aomultiverse-config.yml",
+			"utilities/teleport-config.yml"
 		};
 	}
 
@@ -125,5 +127,9 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	@Override
 	public Logger getLogger() {
 		return this.logger;
+	}
+
+	public ConfigManager getConfigManager() {
+		return this.configManager;
 	}
 }

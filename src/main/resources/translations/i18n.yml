@@ -146,9 +146,11 @@ translations:
       - '<gray>End:</gray> <yellow>{0}</yellow>'
   aomultiverse.edit-world-inventory-title.end-allowed-lore:
     de:
-      - '<gray>Klicke hier, um den Ende zu de- bzw. aktivieren.</gray>'
+      - '<gray>Die Einstellung kann zurzeit nicht über das Inventar angepasst werden.</gray>'
+      - '<gray>Begebe dich in die jeweilige Konfigurationsdatei und passe es dort an.</gray>'
     en:
-      - '<gray>Click here to deactivate or activate the end.</gray>'
+      - '<gray>The setting can not be changed at the moment.</gray>'
+      - '<gray>Go to the corresponding configuration file and adjust it there.</gray>'
   aomultiverse.edit-world-inventory-title.end-allowed-set:
     de:
       - '<gray>der Status das Ende hat sich zu</gray> <yellow>{0}</yellow> <gray>verändert.</gray>'
@@ -161,9 +163,11 @@ translations:
       - '<gray>Current world size:</gray> <yellow>{0}</yellow>'
   aomultiverse.edit-world-inventory-title.world-size-lore:
     de:
-      - '<gray>Klicke hier, um die Weltgröße zu verändern.</gray>'
+      - '<gray>Die Einstellung kann zurzeit nicht über das Inventar angepasst werden.</gray>'
+      - '<gray>Begebe dich in die jeweilige Konfigurationsdatei und passe es dort an.</gray>'
     en:
-      - '<gray>Click here to change the world size.</gray>'
+      - '<gray>The setting can not be changed at the moment.</gray>'
+      - '<gray>Go to the corresponding configuration file and adjust it there.</gray>'
   aomultiverse.edit-world-inventory-title.world-size-set:
     de:
       - '<gray>Die Weltgröße wurde auf <yellow>{0}</yellow> <gray>verändert.</gray>'
@@ -171,9 +175,9 @@ translations:
       - '<gray>The world size has been changed to <yellow>{0}</yellow><gray>.</gray>'
   aomultiverse.edit-world-inventory-title.world-size-title:
     de:
-      - '<gray>Weltgröße</gray>'
+      - 'Weltgröße'
     en:
-      - '<gray>World size</gray>'
+      - 'World size'
   aomultiverse.edit-world-inventory-title.world-size-invalid:
     de:
       - '<gray>Die Weltgröße</gray> <yellow>{0}</yellow> <gray>ist ungültig.</gray>'
@@ -191,6 +195,38 @@ translations:
       - '<gray>Click here to deactivate or activate pvp.</gray>'
   aomultiverse.edit-world-inventory-title.allowed-pvp-set:
     de:
-      - '<gray>der Status des PvP hat sich zu</gray> <yellow>{0}</yellow> <gray>verändert.</gray>'
+      - '<gray>Die Einstellung kann zurzeit nicht über das Inventar angepasst werden.</gray>'
+      - '<gray>Begebe dich in die jeweilige Konfigurationsdatei und passe es dort an.</gray>'
     en:
-      - '<gray>The status of pvp has changed to</gray> <yellow>{0}</yellow><gray>.</gray>'
+      - '<gray>The setting can not be changed at the moment.</gray>'
+      - '<gray>Go to the corresponding configuration file and adjust it there.</gray>'
+  aospawn.spawn-will-be-located:
+    de:
+      - '<gray>Der Spawn wird lokalisiert...</gray>'
+    en:
+      - '<gray>The spawn will be located...</gray>'
+  aospawn.spawn-not-found:
+    de:
+      - '<gray>Der Spawn wurde nicht gesetzt.</gray>'
+    en:
+      - '<gray>The spawn was not set.</gray>'
+  aospawn.teleporting-to-spawn:
+    de:
+      - '<gray>Teleportiere zum Spawn...</gray>'
+    en:
+      - '<gray>Teleporting to spawn...</gray>'
+  teleport-failure-due-to-missing-target-location:
+    de:
+      - '<gray>Teleport fehler: Das Ziel kann nicht gefunden werden.</gray>'
+    en:
+      - '<gray>Teleport error: The target could not be found.</gray>'
+  teleport-success:
+    de:
+      - '<gray>Du wurdest erfolgreich teleportiert.</gray>'
+    en:
+      - '<gray>You have been successfully teleported.</gray>'
+  teleport-in-progress:
+    de:
+      - '<gray>Teleportiere in {0}...</gray>'
+    en:
+      - '<gray>Teleporting in {0}...</gray>'

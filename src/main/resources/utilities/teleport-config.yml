@@ -1,0 +1,9 @@
+teleport-factory:
+  teleportTimer: 3
+  teleportPotionEffect:
+    effect: 'GLOWING'
+    duration: 3
+    amplifier: 1
+    ambient: false
+    showParticles: false
+    showIcon: false
