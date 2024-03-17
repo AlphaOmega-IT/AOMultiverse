@@ -3,13 +3,12 @@ package de.alphaomegait.aomultiverse.inventories;
 import de.alphaomegait.ao18n.I18n;
 import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.entities.heads.WorldHead;
-import de.alphaomegait.woocore.invhandler.AOCItem;
-import de.alphaomegait.woocore.invhandler.AOInv;
-import de.alphaomegait.woocore.invhandler.InvManager;
-import de.alphaomegait.woocore.invhandler.content.InvContents;
-import de.alphaomegait.woocore.invhandler.content.InvProvider;
 import de.alphaomegait.woocore.utilities.HeadFactory;
 import de.alphaomegait.woocore.utilities.ItemEditable;
+import de.alphaomegait.woocore.wooinv.IInvContents;
+import de.alphaomegait.woocore.wooinv.IInventoryProvider;
+import de.alphaomegait.woocore.wooinv.WooInventory;
+import de.alphaomegait.woocore.wooinv.WooItem;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class WorldSelectorInventory implements InvProvider {
+public class WorldSelectorInventory implements IInventoryProvider {
 
 	private final AOMultiverse aoMultiverse;
 	private final List<World> worlds = new ArrayList<>();
@@ -38,26 +37,26 @@ public class WorldSelectorInventory implements InvProvider {
 	 * @return         the inventory for the player
 	 */
 	@Override
-	public AOInv getInventory(final Player player) {
+	public WooInventory get(
+		final @NotNull Player player
+	) {
 		return
-			AOInv
-				.builder()
+			new WooInventory.Builder(
+				this.aoMultiverse.getInventoryFactory(),
+				this
+			)
 				.id("aomultiverse_world_selector")
 				.size(6, 9)
-				.provider(this)
+
 				.maxItemsPerPageAndMaxPages(
 					13,
-					this.worlds,
-					false
-				)
-				.manager(
-					new InvManager(this.aoMultiverse)
+					this.worlds
 				)
 				.title(
 					new I18n.Builder(
 						"aomultiverse.select-world-inventory-title",
 						player
-					).build().displayMessage()
+					).build().displayMessageAsComponent()
 				)
 				.build();
 	}
@@ -70,11 +69,11 @@ public class WorldSelectorInventory implements InvProvider {
 	 */
 	@Override
 	public void init(
-		final Player player,
-		final InvContents invContents
+		final @NotNull Player player,
+		final @NotNull IInvContents invContents
 	) {
-		invContents.fill(AOCItem.empty());
-		final AOCItem[] items = new AOCItem[invContents.inv().getMaxItemsPerPage() * invContents.inv().getMaxPages()];
+		invContents.fill(WooItem.empty());
+		final WooItem[] items = new WooItem[invContents.inv().getMaxItemsPerPage() * invContents.inv().getMaxPages()];
 
 		for (
 			int i = 0; i < items.length; i++
@@ -82,11 +81,11 @@ public class WorldSelectorInventory implements InvProvider {
 			if (
 				i >= this.worlds.size()
 			) {
-				items[i] = AOCItem.empty();
+				items[i] = WooItem.empty();
 				continue;
 			}
 
-			items[i] = AOCItem.from(
+			items[i] = WooItem.from(
 				new ItemEditable.Builder(
 					new HeadFactory.Builder(
 						WorldHead.class,
@@ -104,6 +103,7 @@ public class WorldSelectorInventory implements InvProvider {
 						player
 					).build().displayMessages()
 				).build(),
+				"aomultiverse_world_selector",
 				event -> {
 					invContents.inv().close(player);
 					// TODO teleport to world
@@ -116,8 +116,8 @@ public class WorldSelectorInventory implements InvProvider {
 
 	@Override
 	public void update(
-		final Player player,
-		final InvContents invContents
+		final @NotNull Player player,
+		final @NotNull IInvContents invContents
 	) {
 		//NOT NEEDED
 	}

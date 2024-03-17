@@ -119,7 +119,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 					this.aoMultiverse,
 					player,
 					worldName
-				).getInventory(player).open(player);
+				).get(player).display(player);
 				break;
 			}
 			case TELEPORT: {

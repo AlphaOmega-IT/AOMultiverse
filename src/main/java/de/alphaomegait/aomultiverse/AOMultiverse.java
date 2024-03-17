@@ -8,6 +8,7 @@ import de.alphaomegait.woocore.WooCore;
 import de.alphaomegait.woocore.dependencies.LibraryLoader;
 import de.alphaomegait.woocore.enums.GPADependency;
 import de.alphaomegait.woocore.enums.LicenseType;
+import de.alphaomegait.woocore.wooinv.InventoryFactory;
 import me.blvckbytes.autowirer.AutoWirer;
 import me.blvckbytes.bukkitboilerplate.PluginFileHandler;
 import me.blvckbytes.bukkitevaluable.ConfigManager;
@@ -28,6 +29,8 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	private WooCore wooCore;
 
 	private final Logger logger = Logger.getLogger("AOMultiverse");
+
+	private InventoryFactory inventoryFactory;
 
 	@Override
 	public void onLoad() {
@@ -98,6 +101,8 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 				);
 			});
 
+		this.inventoryFactory = new InventoryFactory(this);
+
 		new WorldFactory(this, this.logger).loadExistingWorlds();
 
 		this.logger.info("AOMultiverse has been enabled!");
@@ -125,5 +130,9 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	@Override
 	public Logger getLogger() {
 		return this.logger;
+	}
+
+	public InventoryFactory getInventoryFactory() {
+		return this.inventoryFactory;
 	}
 }

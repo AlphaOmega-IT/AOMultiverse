@@ -39,6 +39,10 @@
 			<version>1.0</version>
 			<exclusions>
 				<exclusion>
+					<groupId>org.jetbrains</groupId>
+					<artifactId>annotations</artifactId>
+				</exclusion>
+				<exclusion>
 					<groupId>com.github.MilkBowl</groupId>
 					<artifactId>VaultAPI</artifactId>
 				</exclusion>
