@@ -28,3 +28,23 @@ Welcome to the MultiVerse plugin, your gateway to endless exploration and advent
 Define a global spawn point for all worlds or set individual spawn points for each world, offering flexibility and control over player entry points.
 
 Embark on your journey through the multiverse today and unleash your creativity like never before!
+
+# MultiVerse Plugin Installation Guide
+
+Follow these simple steps to install and configure the MultiVerse plugin for your Minecraft server:
+
+1. **Start the Server Within the Plugin**
+    - Ensure you have the MultiVerse plugin JAR file in your server's plugins folder.
+    - Start or restart your Minecraft server to load the plugin.
+
+2. **Configure the Database**
+    - Locate the `database-config.yml` file within the MultiVerse plugin folder.
+    - Open the `database-config.yml` file with a text editor of your choice.
+    - Update the database configuration with your own data, including the database host, port, username, and password.
+    - Save the changes to the `database-config.yml` file.
+
+3. **Restart the Server**
+    - Restart your Minecraft server to apply the changes made to the database configuration.
+    - Once the server has restarted, the MultiVerse plugin should run without any issues.
+
+Congratulations! You have successfully installed and configured the MultiVerse plugin on your Minecraft server. Enjoy exploring infinite worlds and unleashing your creativity!
