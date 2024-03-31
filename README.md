@@ -48,3 +48,5 @@ Follow these simple steps to install and configure the MultiVerse plugin for you
     - Once the server has restarted, the MultiVerse plugin should run without any issues.
 
 Congratulations! You have successfully installed and configured the MultiVerse plugin on your Minecraft server. Enjoy exploring infinite worlds and unleashing your creativity!
+
+For future questions, join my discord at [dsc.gg/atwoo](https://dsc.gg/atwoo).
