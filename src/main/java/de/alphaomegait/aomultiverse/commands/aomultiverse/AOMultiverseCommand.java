@@ -122,6 +122,17 @@ public class AOMultiverseCommand extends PlayerCommand {
 				).get(player).display(player);
 				break;
 			}
+			case FORCE_WORLD: {
+				if (
+					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_FORCE_WORLD)
+				) {
+					this.permissionsSection.sendMissingMessage(player, EAOMultiversePermissionNode.AOMULTIVERSE_FORCE_WORLD);
+					return;
+				}
+
+				this.forceWorld(worldName, this.enumParameterOrElse(args, 2, EAOMultiverseWorldType.class, EAOMultiverseWorldType.DEFAULT), player);
+				break;
+			}
 			case TELEPORT: {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_TELEPORT)
@@ -159,6 +170,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 				"delete",
 				"edit",
 				"help",
+				"force_world",
 				"teleport"
 			)
 		);
@@ -186,7 +198,11 @@ public class AOMultiverseCommand extends PlayerCommand {
 			return StringUtil.copyPartialMatches(args[1].toLowerCase(), completionsArg2, new ArrayList<>());
 		}
 
-		if (args.length == 3 && args[0].equalsIgnoreCase(EAOMultiverseAction.CREATE.name())) {
+		if (
+			args.length == 3 &&
+			args[0].equalsIgnoreCase(EAOMultiverseAction.CREATE.name()) ||
+			args[0].equalsIgnoreCase(EAOMultiverseAction.FORCE_WORLD.name())
+		) {
 			return StringUtil.copyPartialMatches(args[2].toLowerCase(), completionsArg3, new ArrayList<>());
 		}
 
@@ -208,7 +224,8 @@ public class AOMultiverseCommand extends PlayerCommand {
 		this.worldFactory.createWorld(
 			worldName,
 			worldType,
-			player
+			player,
+			false
 		);
 	}
 
@@ -257,5 +274,18 @@ public class AOMultiverseCommand extends PlayerCommand {
 			player
 		).hasPrefix(true)
 		 .build().sendMessageAsComponent();
+	}
+
+	private void forceWorld(
+		final @NotNull String worldName,
+		final @NotNull EAOMultiverseWorldType worldType,
+		final @NotNull Player player
+	) {
+		this.worldFactory.createWorld(
+			worldName,
+			worldType,
+		  player,
+			true
+		);
 	}
 }

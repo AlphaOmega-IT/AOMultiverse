@@ -113,6 +113,11 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 		this.logger.info("AOMultiverse has been disabled!");
 	}
 
+	/**
+	 * Get an array of configuration file paths.
+	 *
+	 * @return         	an array of configuration file paths
+	 */
 	@Override
 	public String[] getConfigPaths() {
 		return new String[] {
@@ -122,16 +127,31 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 		};
 	}
 
+	/**
+	 * Get the WooCore object.
+	 *
+	 * @return         	the WooCore object
+	 */
 	public WooCore getWooCore() {
 		return this.wooCore;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return the logger
+	 */
 	@NotNull
 	@Override
 	public Logger getLogger() {
 		return this.logger;
 	}
 
+	/**
+	 * Get the inventory factory.
+	 *
+	 * @return         	the inventory factory
+	 */
 	public InventoryFactory getInventoryFactory() {
 		return this.inventoryFactory;
 	}

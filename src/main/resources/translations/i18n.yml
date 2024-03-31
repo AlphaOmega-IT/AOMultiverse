@@ -64,9 +64,21 @@ translations:
       - '<gray>Teleporting world</gray> <yellow>{0}</yellow> <gray>... </gray>'
   aomultiverse.help:
     de:
-      - '<gray>Verwendung:</gray> <yellow>/aomultiverse {action} {world}</yellow>'
+      - '<blue>Verwendung:</blue>'
+      - '<yellow>/aomultiverse create [world] <[world-type]></yellow>'
+      - '<yellow>/aomultiverse delete [world] <[world-type]></yellow>'
+      - '<yellow>/aomultiverse edit [world]</yellow>'
+      - '<yellow>/aomultiverse force_world [world] <[world-type]></yellow>'
+      - '<yellow>/aomultiverse help</yellow>'
+      - '<yellow>/aomultiverse teleport [world]</yellow>'
     en:
-      - '<gray>Usage:</gray> <yellow>/aomultiverse {action} {world}</yellow>'
+      - '<blue>Usage:</blue>'
+      - '<yellow>/aomultiverse create [world] <[world-type]></yellow>'
+      - '<yellow>/aomultiverse delete [world] <[world-type]></yellow>'
+      - '<yellow>/aomultiverse edit [world]</yellow>'
+      - '<yellow>/aomultiverse force_world [world] <[world-type]></yellow>'
+      - '<yellow>/aomultiverse help</yellow>'
+      - '<yellow>/aomultiverse teleport [world]</yellow>'
   aomultiverse.world-creation-failed:
     de:
       - '<gray>Welt</gray> <yellow>{0}</yellow> <gray>konnte nicht erstellt werden.</gray>'

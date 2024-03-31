@@ -45,12 +45,13 @@ public class WorldFactory {
 	public void createWorld(
 		final @NotNull String worldName,
 		final @NotNull EAOMultiverseWorldType worldType,
-		final @NotNull Player player
+		final @NotNull Player player,
+		final boolean force
 	) {
 		final World world = Bukkit.getWorld(worldName);
 
 		if (
-			world != null
+			world != null && ! force
 		) {
 			new I18n.Builder(
 				"aomultiverse.already-exists",
@@ -73,8 +74,7 @@ public class WorldFactory {
 					.biomeProvider(new VoidBiomeProvider())
 					.keepSpawnLoaded(TriState.TRUE);
 			} else {
-				return new WorldCreator(worldName)
-					.keepSpawnLoaded(TriState.TRUE);
+				return new WorldCreator(worldName).keepSpawnLoaded(TriState.TRUE);
 			}
 		}).whenCompleteAsync((
 													 (worldCreator, throwable) -> {

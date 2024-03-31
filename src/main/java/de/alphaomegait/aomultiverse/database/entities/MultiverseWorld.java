@@ -3,12 +3,15 @@ package de.alphaomegait.aomultiverse.database.entities;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.EAOMultiverseWorldType;
 import de.alphaomegait.woocore.database.converter.LocationConverter;
 import de.alphaomegait.woocore.database.entities.BaseEntity;
-import jakarta.persistence.*;
-import org.bukkit.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.hibernate.annotations.NamedQuery;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.Serializable;
 
 @NamedQuery(
 	name = "MultiverseWorld.findByName",
@@ -28,7 +31,7 @@ import java.io.Serializable;
 )
 @Entity
 @Table(name = "multiverse_world")
-public class MultiverseWorld extends BaseEntity<MultiverseWorld> implements Serializable {
+public class MultiverseWorld extends BaseEntity<MultiverseWorld> {
 
 	@Column(
 		name = "world_name",

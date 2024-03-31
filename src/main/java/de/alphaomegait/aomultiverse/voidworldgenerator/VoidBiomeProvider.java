@@ -28,7 +28,13 @@ public class VoidBiomeProvider extends BiomeProvider {
 	) {
 		return Biome.THE_VOID;
 	}
-	
+
+	/**
+	 * Retrieves a list of biomes based on the provided world information.
+	 *
+	 * @param  info  the world information used to determine the biomes
+	 * @return       a list of biomes
+	 */
 	@Override
 	public @NotNull List<Biome> getBiomes(
 		@NotNull final WorldInfo info

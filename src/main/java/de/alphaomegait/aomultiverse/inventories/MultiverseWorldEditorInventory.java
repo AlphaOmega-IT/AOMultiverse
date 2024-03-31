@@ -90,7 +90,7 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 			Bukkit.getScheduler().runTaskLater(
 				this.aoMultiverse,
 				() -> {
-					invContents.inv().close(player);
+					player.closeInventory();
 				},
 				1L
 			);
@@ -118,7 +118,7 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 				"edit_spawnpoint_button",
 				event -> {
 					this.multiverseWorld.setSpawnLocation(player.getLocation());
-					invContents.inv().close(player);
+					player.closeInventory();
 
 					this.updateMultiverseWorld();
 
@@ -179,7 +179,7 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 					 .hasPrefix(true)
 					 .build().sendMessageAsComponent();
 
-					invContents.inv().close(player);
+					player.closeInventory();
 				}
 			)
 		);
@@ -308,7 +308,7 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 								);
 							}
 						).open(player);
-					invContents.inv().close(player);
+					player.closeInventory();
 				}
 			)
 		);
@@ -351,7 +351,7 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 					 .build()
 					 .sendMessageAsComponent();
 
-					invContents.inv().close(player);
+					player.closeInventory();
 				}
 			)
 		);

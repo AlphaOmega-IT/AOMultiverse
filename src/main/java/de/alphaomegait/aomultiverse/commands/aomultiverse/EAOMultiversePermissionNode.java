@@ -8,6 +8,7 @@ public enum EAOMultiversePermissionNode implements IPermissionNode {
 	AOMULTIVERSE("aomultiverse.command", "aomultiverse.command"),
 	AOMULTIVERSE_CREATE_WORLD("aomultiverse.create-world", "aomultiverse.create"),
 	AOMULTIVERSE_EDIT("aomultiverse.edit-world", "aomultiverse.edit"),
+	AOMULTIVERSE_FORCE_WORLD("aomultiverse.force-world", "aomultiverse.force"),
 	AOMULTIVERSE_DELETE_WORLD("aomultiverse.delete-world", "aomultiverse.delete"),
 	AOMULTIVERSE_TELEPORT("aomultiverse.teleport", "aomultiverse.teleport"),
 	;

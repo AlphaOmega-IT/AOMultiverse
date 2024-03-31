@@ -68,9 +68,7 @@ public class AOSpawnCommand extends PlayerCommand {
 			player
 		).hasPrefix(true).build().sendMessageAsComponent();
 
-		CompletableFuture.supplyAsync(() -> {
-			return this.multiverseWorldDao.getGlobalSpawn().orElse(this.multiverseWorldDao.findByName(player.getWorld().getName()).orElse(null));
-		}).whenCompleteAsync(((multiverseWorld, throwable) -> {
+		CompletableFuture.supplyAsync(() -> this.multiverseWorldDao.getGlobalSpawn().orElse(this.multiverseWorldDao.findByName(player.getWorld().getName()).orElse(null))).whenCompleteAsync(((multiverseWorld, throwable) -> {
 			if (throwable != null)
 				return;
 

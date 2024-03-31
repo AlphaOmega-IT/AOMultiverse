@@ -6,5 +6,6 @@ public enum EAOMultiverseAction {
 	DELETE,
 	HELP,
 	EDIT,
+	FORCE_WORLD,
 	TELEPORT
 }
