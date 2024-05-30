@@ -88,6 +88,11 @@ public class MultiverseWorld extends BaseEntity<MultiverseWorld> {
 		nullable = false
 	)
 	private Boolean hasGlobalSpawn;
+	
+	@Column(
+		name = "enter_permission"
+	)
+  private String enterPermission;
 
 	public MultiverseWorld() {}
 
@@ -95,16 +100,25 @@ public class MultiverseWorld extends BaseEntity<MultiverseWorld> {
 		final @NotNull World world,
 		final @NotNull EAOMultiverseWorldType worldType
 	) {
-		this.worldName = world.getName();
-		this.spawnLocation = world.getSpawnLocation();
-		this.worldSize = (long) world.getWorldBorder().getSize();
-		this.worldSeed = world.getSeed();
-		this.allowNether = Bukkit.getAllowNether();
-		this.allowTheEnd = Bukkit.getAllowEnd();
-		this.worldType = worldType.name();
-		this.allowPVP = world.getPVP();
-		this.hasGlobalSpawn = false;
+    this(world, worldType, "");
 	}
+  
+  public MultiverseWorld(
+      final @NotNull World world,
+      final @NotNull EAOMultiverseWorldType worldType,
+      final @NotNull String enterPermission
+  ) {
+    this.worldName = world.getName();
+    this.spawnLocation = world.getSpawnLocation();
+    this.worldSize = (long) world.getWorldBorder().getSize();
+    this.worldSeed = world.getSeed();
+    this.allowNether = Bukkit.getAllowNether();
+    this.allowTheEnd = Bukkit.getAllowEnd();
+    this.worldType = worldType.name();
+    this.allowPVP = world.getPVP();
+    this.hasGlobalSpawn = false;
+    this.enterPermission = enterPermission;
+  }
 
 	@Override
 	public MultiverseWorld getSelf() {
