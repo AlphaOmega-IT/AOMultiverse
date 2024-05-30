@@ -3,6 +3,9 @@ package de.alphaomegait.aomultiverse;
 import de.alphaomegait.ao18n.AO18n;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.AOMultiverseCommand;
 import de.alphaomegait.aomultiverse.commands.spawn.AOSpawnCommand;
+import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
+import de.alphaomegait.aomultiverse.listener.OnDeath;
+import de.alphaomegait.aomultiverse.listener.OnJoin;
 import de.alphaomegait.aomultiverse.utilities.WorldFactory;
 import de.alphaomegait.woocore.WooCore;
 import de.alphaomegait.woocore.dependencies.LibraryLoader;
@@ -15,6 +18,7 @@ import me.blvckbytes.bukkitevaluable.ConfigManager;
 import me.blvckbytes.bukkitevaluable.IConfigPathsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +34,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 
 	private final Logger logger = Logger.getLogger("AOMultiverse");
 
-	private ConfigManager configManager;
+	private ConfigManager    configManager;
 	private InventoryFactory inventoryFactory;
 
 	@Override
@@ -60,7 +64,10 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			false
 		);
 
-		new AO18n(this, false);
+		new AO18n(
+			this,
+			false
+		);
 		this.logger.info("AOMultiverse has been loaded!");
 	}
 
@@ -76,6 +83,9 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			.addSingleton(PluginFileHandler.class)
 			.addSingleton(AOMultiverseCommand.class)
 			.addSingleton(AOSpawnCommand.class)
+			.addSingleton(MultiverseWorldDao.class)
+			.addSingleton(OnDeath.class)
+			.addSingleton(OnJoin.class)
 			.addInstantiationListener(
 				Command.class,
 				(command, dependencies) -> {
@@ -83,6 +93,16 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 								.register(
 									command.getName(),
 									command
+								);
+				}
+			)
+			.addInstantiationListener(
+				Listener.class,
+				(listener, dependencies) -> {
+					Bukkit.getPluginManager()
+								.registerEvents(
+									listener,
+									this
 								);
 				}
 			)
@@ -102,10 +122,13 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 				);
 			});
 
-		this.configManager = autoWirer.getOrInstantiateClass(ConfigManager.class, true);
+		this.configManager    = autoWirer.findInstance(ConfigManager.class).orElseThrow();
 		this.inventoryFactory = new InventoryFactory(this);
 
-		new WorldFactory(this, this.logger).loadExistingWorlds();
+		new WorldFactory(
+			this,
+			this.logger
+		).loadExistingWorlds();
 
 		this.logger.info("AOMultiverse has been enabled!");
 	}
@@ -118,11 +141,11 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	/**
 	 * Get an array of configuration file paths.
 	 *
-	 * @return         	an array of configuration file paths
+	 * @return an array of configuration file paths
 	 */
 	@Override
 	public String[] getConfigPaths() {
-		return new String[] {
+		return new String[]{
 			"database-config.yml",
 			"aomultiverse-config.yml",
 			"utilities/teleport-config.yml"
@@ -132,7 +155,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	/**
 	 * Get the WooCore object.
 	 *
-	 * @return         	the WooCore object
+	 * @return the WooCore object
 	 */
 	public WooCore getWooCore() {
 		return this.wooCore;
@@ -152,11 +175,13 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	/**
 	 * Get the inventory factory.
 	 *
-	 * @return         	the inventory factory
+	 * @return the inventory factory
 	 */
 	public InventoryFactory getInventoryFactory() {
 		return this.inventoryFactory;
 	}
 
-	public ConfigManager getConfigManager() {return this.configManager;}
+	public ConfigManager getConfigManager() {
+		return this.configManager;
+	}
 }

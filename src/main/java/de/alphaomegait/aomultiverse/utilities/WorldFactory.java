@@ -98,20 +98,29 @@ public class WorldFactory {
 																	 return;
 																 }
 
-																 final MultiverseWorld multiverseWorld = new MultiverseWorld(
-																	 createdWorld,
-																	 worldType
-																 );
+																 try {
+																	 final MultiverseWorld multiverseWorld = new MultiverseWorld(
+																		 createdWorld,
+																		 worldType
+																	 );
 
-																 this.multiverseWorldDao.persistEntity(multiverseWorld);
+																	 this.multiverseWorldDao.persistEntity(multiverseWorld);
 
-																 new I18n.Builder(
-																	 "aomultiverse.world-created",
-																	 player
-																 ).hasPrefix(true)
-																	.setArgs(worldName)
-																	.build()
-																	.sendMessageAsComponent();
+																	 new I18n.Builder(
+																		 "aomultiverse.world-created",
+																		 player
+																	 ).hasPrefix(true)
+																		.setArgs(worldName)
+																		.build()
+																		.sendMessageAsComponent();
+																 } catch (
+																	 final Exception exception
+																 ) {
+																	 new I18n.Builder(
+																		 "aomultiverse.already-exists",
+																		 player
+																	 ).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
+																 }
 															 }
 														 );
 													 }
