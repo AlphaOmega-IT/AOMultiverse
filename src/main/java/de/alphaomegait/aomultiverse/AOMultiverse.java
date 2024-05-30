@@ -30,6 +30,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 
 	private final Logger logger = Logger.getLogger("AOMultiverse");
 
+	private ConfigManager configManager;
 	private InventoryFactory inventoryFactory;
 
 	@Override
@@ -101,6 +102,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 				);
 			});
 
+		this.configManager = autoWirer.getOrInstantiateClass(ConfigManager.class, true);
 		this.inventoryFactory = new InventoryFactory(this);
 
 		new WorldFactory(this, this.logger).loadExistingWorlds();
@@ -155,4 +157,6 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	public InventoryFactory getInventoryFactory() {
 		return this.inventoryFactory;
 	}
+
+	public ConfigManager getConfigManager() {return this.configManager;}
 }

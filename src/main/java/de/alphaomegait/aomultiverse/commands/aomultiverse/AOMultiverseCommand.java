@@ -2,7 +2,7 @@ package de.alphaomegait.aomultiverse.commands.aomultiverse;
 
 import de.alphaomegait.ao18n.I18n;
 import de.alphaomegait.aomultiverse.AOMultiverse;
-import de.alphaomegait.aomultiverse.inventories.MultiverseWorldEditorInventory;
+import de.alphaomegait.aomultiverse.inventories.MultiverseWorldEditorUI;
 import de.alphaomegait.aomultiverse.utilities.WorldFactory;
 import me.blvckbytes.bukkitcommands.PlayerCommand;
 import me.blvckbytes.bukkitevaluable.ConfigManager;
@@ -115,7 +115,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 					return;
 				}
 
-				new MultiverseWorldEditorInventory(
+				new MultiverseWorldEditorUI(
 					this.aoMultiverse,
 					player,
 					worldName

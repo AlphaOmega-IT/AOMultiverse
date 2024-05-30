@@ -5,10 +5,8 @@ import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import de.alphaomegait.woocore.utilities.ItemBuildable;
-import de.alphaomegait.woocore.wooinv.IInvContents;
-import de.alphaomegait.woocore.wooinv.IInventoryProvider;
-import de.alphaomegait.woocore.wooinv.WooInventory;
-import de.alphaomegait.woocore.wooinv.WooItem;
+import de.alphaomegait.woocore.wooinv.*;
+import de.alphaomegait.woocore.wooinv.filter.IInvFilter;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,13 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MultiverseWorldEditorInventory implements IInventoryProvider {
+public class MultiverseWorldEditorUI implements IInventoryProvider {
 
 	private final AOMultiverse       aoMultiverse;
 	private final MultiverseWorld    multiverseWorld;
 	private final MultiverseWorldDao multiverseWorldDao;
 
-	public MultiverseWorldEditorInventory(
+	public MultiverseWorldEditorUI(
 		final @NotNull AOMultiverse aoMultiverse,
 		final @NotNull Player player,
 		final @NotNull String worldName
@@ -58,19 +56,18 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 			new WooInventory.Builder(
 				this.aoMultiverse.getInventoryFactory(),
 				this
-			)
-				.id("aomultiverse_world_selector")
-				.size(
-					6,
-					9
-				)
-				.title(
-					new I18n.Builder(
-						"aomultiverse.edit-world-inventory-title",
+			).id("aomultiverse_world_selector")
+			 .size(
+				 6,
+				 9
+			 )
+			 .title(
+				 new I18n.Builder(
+					 "aomultiverse.edit-world-inventory-title",
 						player
-					).build().displayMessageAsComponent()
-				)
-				.build();
+				 ).build().displayMessageAsComponent()
+			 )
+			 .build();
 	}
 
 	/**
@@ -86,12 +83,12 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 	) {
 		invContents.fill(WooItem.empty());
 
-		if (this.multiverseWorld.getId() == null) {
+		if (
+			this.multiverseWorld.getId() == null
+		) {
 			Bukkit.getScheduler().runTaskLater(
 				this.aoMultiverse,
-				() -> {
-					player.closeInventory();
-				},
+				() -> player.closeInventory(),
 				1L
 			);
 			return;
@@ -141,9 +138,10 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.is-global-spawn-name",
 						player
-					).setArgs(this.multiverseWorld.getHasGlobalSpawn() ?
-										"✓" :
-										"✗").build().displayMessageAsComponent()
+					).setArgs(
+						this.multiverseWorld.getHasGlobalSpawn() ?
+						"✓" :
+						"✗").build().displayMessageAsComponent()
 				).setLore(
 					new I18n.Builder(
 						"aomultiverse.edit-world-inventory-title.is-global-spawn-name",
@@ -295,8 +293,9 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 									size
 								);
 
-								if (size > 0)
-									Bukkit.getWorld(this.multiverseWorld.getWorldName()).getWorldBorder().setSize(size);
+								if (
+									size > 0
+								) Bukkit.getWorld(this.multiverseWorld.getWorldName()).getWorldBorder().setSize(size);
 
 								this.updateMultiverseWorld();
 								new I18n.Builder(
@@ -363,6 +362,22 @@ public class MultiverseWorldEditorInventory implements IInventoryProvider {
 		final @NotNull IInvContents invContents
 	) {
 		//NOT NEEDED
+	}
+
+	@Override
+	public IInvPagination pagination(
+		final @NotNull Player player,
+		final @NotNull IInvContents invContents
+	) {
+		return invContents.pagination();
+	}
+
+	@Override
+	public IInvFilter<?> filter(
+		final @NotNull Player player,
+		final @NotNull IInvContents invContents
+	) {
+		return invContents.filter();
 	}
 
 	/**

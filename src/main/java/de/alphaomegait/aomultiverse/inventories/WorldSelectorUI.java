@@ -4,30 +4,65 @@ import de.alphaomegait.ao18n.I18n;
 import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.entities.heads.WorldHead;
 import de.alphaomegait.woocore.utilities.HeadFactory;
+import de.alphaomegait.woocore.utilities.ItemBuildable;
 import de.alphaomegait.woocore.utilities.ItemEditable;
-import de.alphaomegait.woocore.wooinv.IInvContents;
-import de.alphaomegait.woocore.wooinv.IInventoryProvider;
-import de.alphaomegait.woocore.wooinv.WooInventory;
-import de.alphaomegait.woocore.wooinv.WooItem;
+import de.alphaomegait.woocore.utilities.TeleportFactory;
+import de.alphaomegait.woocore.wooinv.*;
+import de.alphaomegait.woocore.wooinv.filter.IInvFilter;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
-public class WorldSelectorInventory implements IInventoryProvider {
+public class WorldSelectorUI implements IInventoryProvider {
 
 	private final AOMultiverse aoMultiverse;
 	private final List<World> worlds = new ArrayList<>();
+	private final List<WooItem> worldButtons = new LinkedList<>();
 
-	public WorldSelectorInventory(
-		final @NotNull AOMultiverse aoMultiverse
+	public WorldSelectorUI(
+		final @NotNull AOMultiverse aoMultiverse,
+		final @NotNull Player player
 	) {
 		this.aoMultiverse = aoMultiverse;
 		this.worlds.addAll(this.aoMultiverse.getServer().getWorlds());
 		this.worlds.sort(Comparator.comparing(World::getName));
+
+		this.worlds.forEach(world -> {
+			this.worldButtons.add(
+				WooItem.from(
+					new ItemEditable.Builder(
+						new HeadFactory.Builder(
+							WorldHead.class,
+							player
+						).build()
+					).setName(
+						new I18n.Builder(
+							"aomultiverse.display.world-name",
+							player
+						).setArgs(world.getName())
+						 .build().displayMessageAsComponent()
+					).setLore(
+						new I18n.Builder(
+							"aomultiverse.display.world-lore",
+							player
+						).build().displayMessages()
+					).build(),
+					"aomultiverse_world_selector",
+					event -> {
+						new TeleportFactory(
+							this.aoMultiverse,
+							this.aoMultiverse.getConfigManager()
+						).teleport(
+							player,
+							world.getSpawnLocation(),
+							"aomultiverse.teleport"
+						);
+					}
+				));
+		});
 	}
 
 	/**
@@ -79,39 +114,17 @@ public class WorldSelectorInventory implements IInventoryProvider {
 			int i = 0; i < items.length; i++
 		) {
 			if (
-				i >= this.worlds.size()
+				i >= this.worldButtons.size()
 			) {
-				items[i] = WooItem.empty();
-				continue;
+				Arrays.fill(
+					items,
+					WooItem.empty(new ItemBuildable.Builder(Material.AIR).build())
+				);
+				break;
 			}
 
-			items[i] = WooItem.from(
-				new ItemEditable.Builder(
-					new HeadFactory.Builder(
-						WorldHead.class,
-						player
-					).build()
-				).setName(
-					new I18n.Builder(
-						"aomultiverse.display.world-name",
-					  player
-					).setArgs(this.worlds.get(i).getName())
-					 .build().displayMessageAsComponent()
-				).setLore(
-					new I18n.Builder(
-						"aomultiverse.display.world-lore",
-						player
-					).build().displayMessages()
-				).build(),
-				"aomultiverse_world_selector",
-				event -> {
-					invContents.inv().close(player);
-					// TODO teleport to world
-				}
-			);
+			items[i] = this.worldButtons.get(i);
 		}
-
-		
 	}
 
 	@Override
@@ -120,5 +133,21 @@ public class WorldSelectorInventory implements IInventoryProvider {
 		final @NotNull IInvContents invContents
 	) {
 		//NOT NEEDED
+	}
+
+	@Override
+	public IInvPagination pagination(
+		final @NotNull Player player,
+		final @NotNull IInvContents invContents
+	) {
+		return invContents.pagination();
+	}
+
+	@Override
+	public IInvFilter<?> filter(
+		final @NotNull Player player,
+		final @NotNull IInvContents invContents
+	) {
+		return invContents.filter();
 	}
 }
