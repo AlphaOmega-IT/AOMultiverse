@@ -4,7 +4,7 @@ import de.alphaomegait.ao18n.AO18n;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.AOMultiverseCommand;
 import de.alphaomegait.aomultiverse.commands.spawn.AOSpawnCommand;
 import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
-import de.alphaomegait.aomultiverse.listener.OnDeath;
+import de.alphaomegait.aomultiverse.listener.OnRespawn;
 import de.alphaomegait.aomultiverse.listener.OnJoin;
 import de.alphaomegait.aomultiverse.utilities.WorldFactory;
 import de.alphaomegait.woocore.WooCore;
@@ -84,7 +84,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			.addSingleton(AOMultiverseCommand.class)
 			.addSingleton(AOSpawnCommand.class)
 			.addSingleton(MultiverseWorldDao.class)
-			.addSingleton(OnDeath.class)
+			.addSingleton(OnRespawn.class)
 			.addSingleton(OnJoin.class)
 			.addInstantiationListener(
 				Command.class,
