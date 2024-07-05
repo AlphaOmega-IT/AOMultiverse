@@ -40,6 +40,7 @@ permissions:
       teleport: aomultiverse.teleport
       spawn: aomultiverse.spawn
       set-spawn: aomultiverse.setspawn
+      load: aomultiverse.load
       
 lut:
   prefix: '&8[&5AOMultiverse&8] &7'

@@ -133,6 +133,17 @@ public class AOMultiverseCommand extends PlayerCommand {
 				this.forceWorld(worldName, this.enumParameterOrElse(args, 2, EAOMultiverseWorldType.class, EAOMultiverseWorldType.DEFAULT), player);
 				break;
 			}
+			case LOAD: {
+				if (
+					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_LOAD_WORLD)
+				) {
+					this.permissionsSection.sendMissingMessage(player, EAOMultiversePermissionNode.AOMULTIVERSE_LOAD_WORLD);
+					return;
+				}
+
+				this.loadWorld(worldName, this.enumParameterOrElse(args, 2, EAOMultiverseWorldType.class, EAOMultiverseWorldType.DEFAULT), player);
+				break;
+			}
 			case TELEPORT: {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_TELEPORT)
@@ -169,8 +180,9 @@ public class AOMultiverseCommand extends PlayerCommand {
 				"create",
 				"delete",
 				"edit",
-				"help",
 				"force_world",
+				"help",
+				"load",
 				"teleport"
 			)
 		);
@@ -274,6 +286,18 @@ public class AOMultiverseCommand extends PlayerCommand {
 			player
 		).hasPrefix(true)
 		 .build().sendMessageAsComponent();
+	}
+
+	private void loadWorld(
+		final @NotNull String worldName,
+		final @NotNull EAOMultiverseWorldType worldType,
+		final @NotNull Player player
+	) {
+		this.forceWorld(
+			worldName,
+			worldType,
+			player
+		);
 	}
 
 	private void forceWorld(

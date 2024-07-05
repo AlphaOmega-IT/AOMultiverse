@@ -111,12 +111,6 @@ public class VoidChunkGenerator extends ChunkGenerator {
     }
     
     @Override
-    @NotNull
-    public ChunkGenerator.@NotNull ChunkData createVanillaChunkData(@NotNull World world, int x, int z) {
-        return super.createVanillaChunkData(world, x, z);
-    }
-    
-    @Override
     public boolean shouldGenerateStructures(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
         return false;
     }

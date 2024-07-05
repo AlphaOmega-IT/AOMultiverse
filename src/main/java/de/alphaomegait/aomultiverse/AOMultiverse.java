@@ -61,7 +61,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			this,
 			LicenseType.FREE,
 			dependencies,
-			false
+			false, true
 		);
 
 		new AO18n(

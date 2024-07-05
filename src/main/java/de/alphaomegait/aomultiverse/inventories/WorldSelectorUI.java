@@ -8,7 +8,7 @@ import de.alphaomegait.woocore.utilities.ItemBuildable;
 import de.alphaomegait.woocore.utilities.ItemEditable;
 import de.alphaomegait.woocore.utilities.TeleportFactory;
 import de.alphaomegait.woocore.wooinv.*;
-import de.alphaomegait.woocore.wooinv.filter.IInvFilter;
+import de.alphaomegait.woocore.wooinv.filter.IUIFilter;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -144,7 +144,7 @@ public class WorldSelectorUI implements IInventoryProvider {
 	}
 
 	@Override
-	public IInvFilter<?> filter(
+	public IUIFilter filter(
 		final @NotNull Player player,
 		final @NotNull IInvContents invContents
 	) {

@@ -6,7 +6,7 @@ import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import de.alphaomegait.woocore.utilities.ItemBuildable;
 import de.alphaomegait.woocore.wooinv.*;
-import de.alphaomegait.woocore.wooinv.filter.IInvFilter;
+import de.alphaomegait.woocore.wooinv.filter.IUIFilter;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -373,7 +373,7 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 	}
 
 	@Override
-	public IInvFilter<?> filter(
+	public IUIFilter filter(
 		final @NotNull Player player,
 		final @NotNull IInvContents invContents
 	) {

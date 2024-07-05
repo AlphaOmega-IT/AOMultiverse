@@ -40,6 +40,6 @@ public class OnRespawn implements Listener {
 				globalSpawnWorld -> event.setRespawnLocation(globalSpawnWorld.getSpawnLocation()),
 				() -> world.ifPresent(worldWorld -> event.setRespawnLocation(worldWorld.getSpawnLocation()))
 			);
-		});
+		}).join();
 	}
 }

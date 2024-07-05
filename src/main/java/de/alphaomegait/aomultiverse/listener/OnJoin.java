@@ -3,7 +3,6 @@ package de.alphaomegait.aomultiverse.listener;
 import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
-import de.alphaomegait.woocore.utilities.TeleportFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -84,14 +83,7 @@ public class OnJoin implements Listener {
 		Bukkit.getScheduler().runTask(
 			this.aoMultiverse,
 			() ->
-				new TeleportFactory(
-					this.aoMultiverse,
-					this.aoMultiverse.getConfigManager()
-				).teleport(
-					player,
-					location,
-					""
-				)
+				player.teleport(location)
 		);
 	}
 }
