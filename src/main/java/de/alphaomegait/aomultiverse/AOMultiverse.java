@@ -47,6 +47,7 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 		List<LibraryLoader.Dependency> dependencies = new ArrayList<>();
 		dependencies.addAll(GPADependency.HIBERNATE_ORM.getDependencies());
 		dependencies.addAll(GPADependency.MYSQL.getDependencies());
+		dependencies.addAll(GPADependency.H2.getDependencies());
 
 		Arrays.stream(this.getConfigPaths()).toList().forEach(
 			configPath -> {
