@@ -13,7 +13,7 @@
 host: 'localhost'
 port: 3306
 databaseName: 'aomultiverse'
-databaseType: 'H2'
+databaseType: 'mysql'
 tableCreation: 'update'
 username: 'root'
 password: ''
