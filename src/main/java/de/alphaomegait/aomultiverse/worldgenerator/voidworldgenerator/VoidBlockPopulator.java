@@ -1,4 +1,4 @@
-package de.alphaomegait.aomultiverse.voidworldgenerator;
+package de.alphaomegait.aomultiverse.worldgenerator.voidworldgenerator;
 
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
@@ -26,6 +26,5 @@ public class VoidBlockPopulator extends BlockPopulator {
 			final int chunkZ,
 			@NotNull final LimitedRegion limitedRegion
 		) {
-			// Empty world
     }
 }

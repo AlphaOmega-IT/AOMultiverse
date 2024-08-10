@@ -5,10 +5,13 @@ import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.EAOMultiverseWorldType;
 import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
-import de.alphaomegait.aomultiverse.voidworldgenerator.VoidBiomeProvider;
-import de.alphaomegait.aomultiverse.voidworldgenerator.VoidChunkGenerator;
+import de.alphaomegait.aomultiverse.worldgenerator.plotworldgenerator.PlotBiomeProvider;
+import de.alphaomegait.aomultiverse.worldgenerator.plotworldgenerator.PlotChunkGenerator;
+import de.alphaomegait.aomultiverse.worldgenerator.voidworldgenerator.VoidBiomeProvider;
+import de.alphaomegait.aomultiverse.worldgenerator.voidworldgenerator.VoidChunkGenerator;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -54,14 +57,14 @@ public class WorldFactory {
 			world != null && ! force
 		) {
 			new I18n.Builder(
-				"aomultiverse.already-exists",
+				"aomultiverse-already-exists",
 				player
 			).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
 			return;
 		}
 
 		new I18n.Builder(
-			"aomultiverse.creating-world",
+			"aomultiverse-creating-world",
 			player
 		).hasPrefix(true).build().sendMessageAsComponent();
 
@@ -71,8 +74,23 @@ public class WorldFactory {
 					.generator(
 						new VoidChunkGenerator()
 					)
-					.biomeProvider(new VoidBiomeProvider())
 					.keepSpawnLoaded(TriState.TRUE);
+			} else if (
+				worldType.equals(EAOMultiverseWorldType.PLOT)
+			) {
+				return new WorldCreator(worldName + "-" + EAOMultiverseWorldType.PLOT.name())
+					.generator(
+						new PlotChunkGenerator(
+							10,
+							10,
+							10,
+							Material.STONE,
+							Material.BEDROCK,
+							Material.IRON_BLOCK
+						)
+					)
+					.keepSpawnLoaded(TriState.TRUE);
+				//TODO
 			} else {
 				return new WorldCreator(worldName).keepSpawnLoaded(TriState.TRUE);
 			}

@@ -1,4 +1,4 @@
-package de.alphaomegait.aomultiverse.voidworldgenerator;
+package de.alphaomegait.aomultiverse.worldgenerator.plotworldgenerator;
 
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoidBiomeProvider extends BiomeProvider {
+public class PlotBiomeProvider extends BiomeProvider {
 
 	/**
 	 * A description of the entire Java function.
@@ -26,7 +26,7 @@ public class VoidBiomeProvider extends BiomeProvider {
 		final int y,
 		final int z
 	) {
-		return Biome.THE_VOID;
+		return Biome.PLAINS;
 	}
 
 	/**
@@ -39,6 +39,6 @@ public class VoidBiomeProvider extends BiomeProvider {
 	public @NotNull List<Biome> getBiomes(
 		@NotNull final WorldInfo info
 	) {
-		return new ArrayList<>(List.of(Biome.THE_VOID));
+		return new ArrayList<>(List.of(Biome.PLAINS));
 	}
 }

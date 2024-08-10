@@ -10,6 +10,11 @@ public enum EAOMultiverseWorldType {
 	/**
 	 * Generates a void world
 	 */
-	VOID
+	VOID,
+
+	/**
+	 * Generates a plot world
+	 */
+	PLOT
 	;
 }
