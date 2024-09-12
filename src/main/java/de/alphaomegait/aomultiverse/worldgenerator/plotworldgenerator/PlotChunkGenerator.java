@@ -1,6 +1,5 @@
 package de.alphaomegait.aomultiverse.worldgenerator.plotworldgenerator;
 
-import de.alphaomegait.aomultiverse.worldgenerator.voidworldgenerator.VoidBiomeProvider;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -129,7 +128,8 @@ public class PlotChunkGenerator extends ChunkGenerator {
         this.plotWallMaterial,
         this.plotRandMaterial,
         this.plotFloorMaterial,
-        this.plotLayers
+        this.plotLayers,
+        true
       )
     );
   }
@@ -139,7 +139,7 @@ public class PlotChunkGenerator extends ChunkGenerator {
     final @NotNull World world,
     final @NotNull Random random
   ) {
-    return new Location(world, 0.0, this.plotHeight, 0.0);
+    return new Location(world, 0.0, this.plotHeight + 1, 0.0);
   }
 
   @Override

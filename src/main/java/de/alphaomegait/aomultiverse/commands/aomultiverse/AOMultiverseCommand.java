@@ -1,7 +1,8 @@
 package de.alphaomegait.aomultiverse.commands.aomultiverse;
 
-import de.alphaomegait.ao18n.I18n;
+import de.alphaomegait.ao18n.i18n.I18n;
 import de.alphaomegait.aomultiverse.AOMultiverse;
+import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import de.alphaomegait.aomultiverse.inventories.MultiverseWorldEditorUI;
 import de.alphaomegait.aomultiverse.utilities.WorldFactory;
 import me.blvckbytes.bukkitcommands.PlayerCommand;
@@ -15,11 +16,15 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 public class AOMultiverseCommand extends PlayerCommand {
 
+	private final static String MAPPING_PATH = "commands/aomultiverse-config.yml";
+	private final static String ROOT_SECTION = "commands.aomultiverse";
+	
 	private final AOMultiverse aoMultiverse;
 	private final WorldFactory worldFactory;
 	private final PermissionsSection permissionsSection;
@@ -31,20 +36,20 @@ public class AOMultiverseCommand extends PlayerCommand {
 		super(
 			configManager
 				.getMapper(
-					"aomultiverse-config.yml"
+				MAPPING_PATH
 				)
 				.mapSection(
-					"commands.aomultiverse",
+					ROOT_SECTION,
 					AOMultiverseCommandSection.class
 				),
 			aoMultiverse.getLogger()
 		);
 
 		this.aoMultiverse = aoMultiverse;
-		this.worldFactory = new WorldFactory(this.aoMultiverse, this.aoMultiverse.getLogger());
+		this.worldFactory = new WorldFactory(this.aoMultiverse);
 		this.permissionsSection = configManager
 			.getMapper(
-				"aomultiverse-config.yml"
+			MAPPING_PATH
 			)
 			.mapSection(
 				"permissions",
@@ -119,7 +124,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 					this.aoMultiverse,
 					player,
 					worldName
-				).get(player).display(player);
+				).get(player).ifPresent(ui -> ui.display(player));
 				break;
 			}
 			case FORCE_WORLD: {
@@ -152,7 +157,18 @@ public class AOMultiverseCommand extends PlayerCommand {
 					return;
 				}
 
-				this.teleport(worldName, player);
+				final MultiverseWorld multiverseWorld = this.aoMultiverse.getMultiverseWorlds().get(worldName);
+				if (
+					multiverseWorld == null
+				) {
+					new I18n.Builder(
+						"aomultiverse-world_does_not_exist",
+						player
+					).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
+					return;
+				}
+				
+				this.teleport(multiverseWorld, player);
 				break;
 			}
 			default: {
@@ -198,16 +214,17 @@ public class AOMultiverseCommand extends PlayerCommand {
 		List<String> completionsArg3 = new ArrayList<>(
 			List.of(
 				"default",
+				"plot",
 				"void"
 			)
 		);
 
 		if (args.length == 1) {
-			return StringUtil.copyPartialMatches(args[0].toLowerCase(), completionsArg1, new ArrayList<>());
+			return StringUtil.copyPartialMatches(args[0].toLowerCase(), completionsArg1, Collections.emptyList());
 		}
 
 		if (args.length == 2) {
-			return StringUtil.copyPartialMatches(args[1].toLowerCase(), completionsArg2, new ArrayList<>());
+			return StringUtil.copyPartialMatches(args[1].toLowerCase(), completionsArg2, Collections.emptyList());
 		}
 
 		if (
@@ -215,7 +232,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 			args[0].equalsIgnoreCase(EAOMultiverseAction.CREATE.name()) ||
 			args[0].equalsIgnoreCase(EAOMultiverseAction.FORCE_WORLD.name())
 		) {
-			return StringUtil.copyPartialMatches(args[2].toLowerCase(), completionsArg3, new ArrayList<>());
+			return StringUtil.copyPartialMatches(args[2].toLowerCase(), completionsArg3, Collections.emptyList());
 		}
 
 		return new ArrayList<>();
@@ -260,15 +277,15 @@ public class AOMultiverseCommand extends PlayerCommand {
 	/**
 	 * A method to teleport a player to a specified world.
 	 *
-	 * @param  worldName  the name of the world to teleport to
+	 * @param  multiverseWorld  the world to teleport to
 	 * @param  player     the player to teleport
 	 */
 	private void teleport(
-		final @NotNull String worldName,
+		final @NotNull MultiverseWorld multiverseWorld,
 		final @NotNull Player player
 	) {
 		this.worldFactory.teleport(
-			worldName,
+			multiverseWorld,
 			player
 		);
 	}
@@ -282,7 +299,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 		final @NotNull Player player
 	) {
 		new I18n.Builder(
-			"aomultiverse.help",
+			"aomultiverse-help",
 			player
 		).hasPrefix(true)
 		 .build().sendMessageAsComponent();

@@ -14,75 +14,160 @@
 	</description>
 	<url>https://alphaomega-it.de</url>
 
-	<properties>
-		<java.version>21</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <developers>
+        <developer>
+            <id>alphaomega-it</id>
+            <name>Justin Eiletz</name>
+            <email>justin.eiletz@alphaomega-it.de</email>
+            <url>https://alphaomega-it.de</url>
+            <organization>AlphaOmega-IT</organization>
+            <organizationUrl>https://alphaomega-it.de</organizationUrl>
+            <roles>
+                <role>Developer</role>
+                <role>Owner</role>
+            </roles>
+        </developer>
+    </developers>
 
-  <repositories>
-      <repository>
-          <id>papermc-repo</id>
-          <url>https://repo.papermc.io/repository/maven-public/</url>
-      </repository>
-  </repositories>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/AlphaOmega-IT/AO18n/blob/master/LICENSE</url>
+        </license>
+    </licenses>
 
-  <dependencies>
-    <dependency>
-			<groupId>io.papermc.paper</groupId>
-      <artifactId>paper-api</artifactId>
-      <version>1.21-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-		</dependency>
-	  <dependency>
-		  <groupId>de.alphaomega-it.woocore</groupId>
-		  <artifactId>WooCore</artifactId>
-		  <version>1.5</version>
-	  </dependency>
-	  <dependency>
-		  <groupId>me.blvckbytes</groupId>
-		  <artifactId>BukkitCommands</artifactId>
-		  <version>0.1</version>
-		  <scope>provided</scope>
-		  <exclusions>
-			  <exclusion>
-				  <groupId>net.kyori</groupId>
-				  <artifactId>adventure-text-minimessage</artifactId>
-			  </exclusion>
-			  <exclusion>
-				  <groupId>org.yaml</groupId>
-				  <artifactId>snakeyaml</artifactId>
-			  </exclusion>
-			  <exclusion>
-				  <groupId>com.google.code.gson</groupId>
-				  <artifactId>gson</artifactId>
-			  </exclusion>
-		  </exclusions>
-	  </dependency>
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.1.7.Final</version>
-			<scope>provided</scope>
-		</dependency>
-	  <dependency>
-		  <groupId>com.h2database</groupId>
-		  <artifactId>h2</artifactId>
-		  <version>2.1.214</version>
-		  <scope>provided</scope>
-	  </dependency>
-	  <dependency>
-		  <groupId>de.alphaomega-it.ao18n</groupId>
-		  <artifactId>AO18n</artifactId>
-		  <version>2.4</version>
-		  <scope>provided</scope>
-	  </dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.33</version>
-			<scope>provided</scope>
-		</dependency>
-  </dependencies>
+    <scm>
+        <connection>scm:svn:https://github.com/AlphaOmega-IT/AOMultiverse</connection>
+        <developerConnection>scm:svn:https://github.com/AlphaOmega-IT/AOMultiverse</developerConnection>
+        <url>https://github.com/AlphaOmega-IT/AOMultiverse</url>
+    </scm>
+
+    <properties >
+        <maven.compiler.source >21</maven.compiler.source >
+        <maven.compiler.target >21</maven.compiler.target >
+        <project.build.sourceEncoding >UTF-8</project.build.sourceEncoding >
+    </properties >
+
+    <repositories >
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository >
+            <id >placeholderapi</id >
+            <url >https://repo.extendedclip.com/content/repositories/placeholderapi/</url >
+        </repository >
+    </repositories >
+
+    <dependencies >
+        <!-- PaperMC -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.6.0.Final</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- MySQL -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.0.0</version>
+            <scope >compile</scope >
+        </dependency>
+
+        <!-- H2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.214</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- ConfigMapper -->
+        <dependency>
+            <groupId>de.alphaomega-it.bbconfigmapper</groupId>
+            <artifactId>BBConfigMapper</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- AutoWirer -->
+        <dependency>
+            <groupId>de.alphaomega-it.autowirer</groupId>
+            <artifactId>AutoWirer</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- BukkitEvaluable -->
+        <dependency>
+            <groupId>de.alphaomega-it.bukkitevaluable</groupId>
+            <artifactId>BukkitEvaluable</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- AO18n -->
+        <dependency>
+            <groupId>de.alphaomega-it.ao18n</groupId>
+            <artifactId>AO18n</artifactId>
+            <version>2.55</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Reflections -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- AOCore of AlphaOmega-IT -->
+        <dependency >
+            <groupId >de.alphaomega-it.aocore</groupId >
+            <artifactId >AOCore</artifactId >
+            <version>1.0</version >
+            <scope>compile</scope >
+        </dependency >
+
+        <!-- PlaceholderAPI -->
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- BukkitCommands -->
+        <dependency>
+            <groupId>de.alphaomega-it.bukkitcommands</groupId>
+            <artifactId>BukkitCommands</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies >
 
     <build>
         <finalName>AOMultiverse</finalName>

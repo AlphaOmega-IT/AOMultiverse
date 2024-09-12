@@ -24,3 +24,6 @@ website: https://alphaomega-it.de
 
 # The description of the plugin.
 description: The plugin provides the functionality of the Multiverse system.
+
+loadBefore:
+  - WooOneblock
