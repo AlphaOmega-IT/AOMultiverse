@@ -89,12 +89,12 @@ translations:
       - '<gray>Welt bearbeiten</gray>'
     en:
       - '<gray>Edit world</gray>'
-  aomultiverse-edit-world-inventory-title.spawnpoint-name:
+  aomultiverse_edit_world-spawnpoint_name:
     de:
       - '<gray>Spawnpunkt setzen</gray>'
     en:
       - '<gray>Spawnpoint setzen</gray>'
-  aomultiverse-edit-world-inventory-title.spawnpoint-lore:
+  aomultiverse_edit_world-spawnpoint_lore:
     de:
       - '<gray>Der aktuelle Spawnpunkt liegt bei</gray>'
       - '<yellow>{0}</yellow><gray>. Um den Spawnpunkt</gray>'
@@ -103,17 +103,17 @@ translations:
       - '<gray>The current spawnpoint is at</gray>'
       - '<yellow>{0}</yellow><gray>. To set the spawnpoint</gray>'
       - '<gray>click here.</gray>'
-  aomultiverse-edit-world-inventory-title.spawnpoint-set:
+  aomultiverse_edit_world-spawnpoint_set:
     de:
       - '<gray>Spawnpunkt <yellow>{0}</yellow> erfolgreich gesetzt.</gray>'
     en:
       - '<gray>Spawnpoint <yellow>{0}</yellow> successfully set.</gray>'
-  aomultiverse-edit-world-inventory-title.is-global-spawn-name:
+  aomultiverse_edit_world-is_global_spawn_name:
     de:
       - '<gray>Globaler Spawnpunkt <yellow>{0}</yellow></gray>'
     en:
       - '<gray>Global Spawnpunkt <yellow>{0}</yellow></gray>'
-  aomultiverse-edit-world-inventory-title.is-global-spawn-lore:
+  aomultiverse_edit_world-is_global_spawn_lore:
     de:
       - '<gray>Globaler Spawnpunkt: <yellow>{0}</yellow></gray>'
       - '</gray>Um den Globalen Spawnpunkt zu de- bzw. aktivieren,</gray>'
@@ -122,12 +122,12 @@ translations:
       - '<gray>Global Spawnpunkt: <yellow>{0}</yellow></gray>'
       - '</gray>To deactivate or activate the global spawnpoint,</gray>'
       - '<gray>click here.</gray>'
-  aomultiverse-edit-world-inventory-title.global-spawn-set:
+  aomultiverse_edit_world-global_spawn_set:
     de:
       - '<gray>Globaler Spawnpunkt</gray> <yellow>{0}</yellow><gray>.</gray>'
     en:
       - '<gray>Global spawnpoint</gray> <yellow>{0}</yellow><gray>.</gray>'
-  aomultiverse-edit-world-inventory-title.global-spawn-already-set:
+  aomultiverse_edit_world-global_spawn_already_set:
     de:
       - '<gray>Es existiert bereits einen Globalen Spawnpunkt.</gray>'
       - '<gray>Um einen Globalen Spawnpunkt in der Welt</gray> <yellow>{0}</yellow><gray> zu deaktivieren,</gray>'
@@ -136,98 +136,98 @@ translations:
       - '<gray>An already existing global spawnpoint exists.</gray>'
       - '<gray>To deactivate a global spawnpoint in the world</gray> <yellow>{0}</yellow><gray>,</gray>'
       - '<gray>go to the world and edit it.</gray>'
-  aomultiverse-edit-world-inventory-title.nether-allowed-name:
+  aomultiverse_edit_world-nether_allowed_name:
     de:
       - '<gray>Nether:</gray> <yellow>{0}</yellow>'
     en:
       - '<gray>Nether:</gray> <yellow>{0}</yellow>'
-  aomultiverse-edit-world-inventory-title.nether-allowed-lore:
+  aomultiverse_edit_world-nether_allowed_lore:
     de:
       - '<gray>Klicke hier, um den Nether zu de- bzw. aktivieren.</gray>'
     en:
       - '<gray>Click here to deactivate or activate the nether.</gray>'
-  aomultiverse-edit-world-inventory-title.nether-allowed-set:
+  aomultiverse_edit_world-nether_allowed_set:
     de:
       - '<gray>der Status das Ende hat sich zu</gray> <yellow>{0}</yellow> <gray>verändert.</gray>'
     en:
       - '<gray>The status of the end has changed to</gray> <yellow>{0}</yellow><gray>.</gray>'
-  aomultiverse-edit-world-inventory-title.end-allowed-name:
+  aomultiverse_edit_world-end_allowed_name:
     de:
       - '<gray>Ende:</gray> <yellow>{0}</yellow>'
     en:
       - '<gray>End:</gray> <yellow>{0}</yellow>'
-  aomultiverse-edit-world-inventory-title.end-allowed-lore:
+  aomultiverse_edit_world-end_allowed_lore:
     de:
       - '<gray>Die Einstellung kann zurzeit nicht über das Inventar angepasst werden.</gray>'
       - '<gray>Begebe dich in die jeweilige Konfigurationsdatei und passe es dort an.</gray>'
     en:
       - '<gray>The setting can not be changed at the moment.</gray>'
       - '<gray>Go to the corresponding configuration file and adjust it there.</gray>'
-  aomultiverse-edit-world-inventory-title.end-allowed-set:
+  aomultiverse_edit_world-end_allowed_set:
     de:
       - '<gray>der Status das Ende hat sich zu</gray> <yellow>{0}</yellow> <gray>verändert.</gray>'
     en:
       - '<gray>The status of the end has changed to</gray> <yellow>{0}</yellow><gray>.</gray>'
-  aomultiverse-edit-world-inventory-title.world-size-name:
+  aomultiverse_edit_world-world_size_name:
     de:
       - '<gray>Aktuelle Weltgröße:</gray> <yellow>{0}</yellow>'
     en:
       - '<gray>Current world size:</gray> <yellow>{0}</yellow>'
-  aomultiverse-edit-world-inventory-title.world-size-lore:
+  aomultiverse_edit_world-world_size_lore:
     de:
       - '<gray>Die Einstellung kann zurzeit nicht über das Inventar angepasst werden.</gray>'
       - '<gray>Begebe dich in die jeweilige Konfigurationsdatei und passe es dort an.</gray>'
     en:
       - '<gray>The setting can not be changed at the moment.</gray>'
       - '<gray>Go to the corresponding configuration file and adjust it there.</gray>'
-  aomultiverse-edit-world-inventory-title.world-size-set:
+  aomultiverse_edit_world-world_size_set:
     de:
       - '<gray>Die Weltgröße wurde auf <yellow>{0}</yellow> <gray>verändert.</gray>'
     en:
       - '<gray>The world size has been changed to <yellow>{0}</yellow><gray>.</gray>'
-  aomultiverse-edit-world-inventory-title.world-size-title:
+  aomultiverse_edit_world-world-size-title:
     de:
       - 'Weltgröße'
     en:
       - 'World size'
-  aomultiverse-edit-world-inventory-title.world-size-invalid:
+  aomultiverse_edit_world-world_size_invalid:
     de:
       - '<gray>Die Weltgröße</gray> <yellow>{0}</yellow> <gray>ist ungültig.</gray>'
     en:
       - '<gray>The world size</gray> <yellow>{0}</yellow> <gray>is invalid.</gray>'
-  aomultiverse-edit-world-inventory-title.allowed-pvp-name:
+  aomultiverse_edit_world-allowed_pvp_name:
     de:
       - '<gray>PvP:</gray> <yellow>{0}</yellow>'
     en:
       - '<gray>PvP:</gray> <yellow>{0}</yellow>'
-  aomultiverse-edit-world-inventory-title.allowed-pvp-lore:
+  aomultiverse_edit_world-allowed_pvp_lore:
     de:
       - '<gray>Klicke hier, um PvP zu de- bzw. aktivieren.</gray>'
     en:
       - '<gray>Click here to deactivate or activate pvp.</gray>'
-  aomultiverse-edit-world-inventory-title.allowed-pvp-set:
+  aomultiverse_edit_world.allowed_pvp_set:
     de:
       - '<gray>Die Einstellung kann zurzeit nicht über das Inventar angepasst werden.</gray>'
       - '<gray>Begebe dich in die jeweilige Konfigurationsdatei und passe es dort an.</gray>'
     en:
       - '<gray>The setting can not be changed at the moment.</gray>'
       - '<gray>Go to the corresponding configuration file and adjust it there.</gray>'
-  aospawn.spawn-will-be-located:
+  aospawn-spawn_will_be_located:
     de:
       - '<gray>Der Spawn wird lokalisiert...</gray>'
     en:
       - '<gray>The spawn will be located...</gray>'
-  aospawn.spawn-not-found:
+  aospawn-spawn_not_found:
     de:
       - '<gray>Der Spawn wurde nicht gesetzt.</gray>'
     en:
       - '<gray>The spawn was not set.</gray>'
-  aospawn.teleporting-to-spawn:
+  aospawn-teleporting_to_spawn:
     de:
       - '<gray>Teleportiere zum Spawn...</gray>'
     en:
       - '<gray>Teleporting to spawn...</gray>'
-  teleport-failure-due-to-missing-target-location:
+  teleport-failure-due_to_missing_target_location:
     de:
       - '<gray>Teleport fehler: Das Ziel kann nicht gefunden werden.</gray>'
     en:
@@ -237,8 +237,3 @@ translations:
       - '<gray>Du wurdest erfolgreich teleportiert.</gray>'
     en:
       - '<gray>You have been successfully teleported.</gray>'
-  teleport-in-progress:
-    de:
-      - '<gray>Teleportiere in {0}...</gray>'
-    en:
-      - '<gray>Teleporting in {0}...</gray>'

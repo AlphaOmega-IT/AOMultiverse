@@ -3,7 +3,6 @@ package de.alphaomegait.aomultiverse.utilities;
 import de.alphaomegait.ao18n.i18n.I18n;
 import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.EAOMultiverseWorldType;
-import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import de.alphaomegait.aomultiverse.worldgenerator.plotworldgenerator.PlotBiomeProvider;
 import de.alphaomegait.aomultiverse.worldgenerator.plotworldgenerator.PlotChunkGenerator;
@@ -20,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -28,7 +28,6 @@ import java.util.concurrent.CompletableFuture;
 public class WorldFactory {
 	
 	private final AOMultiverse aoMultiverse;
-	private final MultiverseWorldDao multiverseWorldDao;
 	
 	/**
 	 * Constructs a new WorldFactory instance.
@@ -39,7 +38,6 @@ public class WorldFactory {
 		final @NotNull AOMultiverse aoMultiverse
 	) {
 		this.aoMultiverse = aoMultiverse;
-		this.multiverseWorldDao = this.aoMultiverse.getMultiverseWorldDao();
 	}
 	
 	/**
@@ -72,17 +70,26 @@ public class WorldFactory {
 			.build()
 			.sendMessageAsComponent();
 		
-		CompletableFuture.supplyAsync(() -> {
-			WorldCreator worldCreator = switch (worldType) {
-				case VOID -> new WorldCreator(worldName + "-" + EAOMultiverseWorldType.VOID.name())
-					.generator(new VoidChunkGenerator())
-					.keepSpawnLoaded(TriState.TRUE);
-				case PLOT -> new WorldCreator(worldName + "-" + EAOMultiverseWorldType.PLOT.name())
-					.generator(new PlotChunkGenerator(30, 6, 30, Material.STONE, Material.COBBLESTONE_SLAB, Material.IRON_BLOCK))
-					.keepSpawnLoaded(TriState.TRUE);
-				default -> new WorldCreator(worldName).keepSpawnLoaded(TriState.TRUE);
-			};
-			return worldCreator.createWorld();
+		CompletableFuture.supplyAsync(() -> switch (worldType) {
+			case VOID -> new WorldCreator(worldName + "-" + EAOMultiverseWorldType.VOID.name())
+				.generator(new VoidChunkGenerator())
+				.keepSpawnLoaded(TriState.TRUE);
+			case PLOT -> new WorldCreator(worldName + "-" + EAOMultiverseWorldType.PLOT.name())
+				.generator(new PlotChunkGenerator(30, 6, 30, Material.STONE, Material.COBBLESTONE_SLAB, Material.IRON_BLOCK))
+				.keepSpawnLoaded(TriState.TRUE);
+			default -> new WorldCreator(worldName).keepSpawnLoaded(TriState.TRUE);
+		}).thenCompose(worldCreator -> {
+			CompletableFuture<World> generatedWorld = new CompletableFuture<>();
+			Bukkit.getScheduler().runTask(this.aoMultiverse, () -> {
+				try {
+					World worldCreated = worldCreator.createWorld();
+					Objects.requireNonNull(worldCreated).getSpawnLocation().toCenterLocation().getBlock().setType(Material.BEDROCK);
+					generatedWorld.complete(worldCreated);
+				} catch (Exception exception) {
+					generatedWorld.completeExceptionally(exception);
+				}
+			});
+			return generatedWorld;
 		}).whenCompleteAsync((worldCreated, throwable) -> {
 			if (throwable != null) return;
 			
@@ -96,7 +103,9 @@ public class WorldFactory {
 			}
 			
 			try {
-				this.multiverseWorldDao.create(new MultiverseWorld(worldCreated, worldType));
+				final MultiverseWorld multiverseWorld = new MultiverseWorld(worldCreated, worldType);
+				this.aoMultiverse.getMultiverseWorldDao().create(multiverseWorld);
+				this.aoMultiverse.getMultiverseWorlds().put(multiverseWorld.getWorldName(), multiverseWorld);
 				
 				new I18n.Builder("aomultiverse-world_created", player)
 					.hasPrefix(true)
@@ -110,7 +119,7 @@ public class WorldFactory {
 					.build()
 					.sendMessageAsComponent();
 			}
-		}).join();
+		});
 	}
 	
 	/**
@@ -158,11 +167,11 @@ public class WorldFactory {
 			FileUtils.deleteDirectory(world.getWorldFolder());
 			
 			CompletableFuture.supplyAsync(
-				() -> this.multiverseWorldDao.findByName(worldName)
+				() -> this.aoMultiverse.getMultiverseWorldDao().findByName(worldName)
 			).thenAcceptAsync(oMultiverseWorld -> {
 				oMultiverseWorld.ifPresentOrElse(
 					multiverseWorld -> {
-						this.multiverseWorldDao.delete(multiverseWorld.getId());
+						this.aoMultiverse.getMultiverseWorldDao().delete(multiverseWorld.getId());
 						new I18n.Builder(
 							"aomultiverse-world_deleted",
 							player
@@ -209,7 +218,7 @@ public class WorldFactory {
 		this.aoMultiverse.getAoCore().getLogger().logInfo("Loading existing worlds...");
 		
 		final Map<String, MultiverseWorld> multiverseWorlds = new HashMap<>();
-		this.multiverseWorldDao.findAll().forEach(multiverseWorld -> {
+		this.aoMultiverse.getMultiverseWorldDao().findAll().forEach(multiverseWorld -> {
 			WorldCreator worldCreator = new WorldCreator(multiverseWorld.getWorldName()).keepSpawnLoaded(TriState.TRUE);
 			if (
 				multiverseWorld.getWorldType().equalsIgnoreCase(EAOMultiverseWorldType.VOID.name())

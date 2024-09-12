@@ -16,7 +16,6 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -220,11 +219,11 @@ public class AOMultiverseCommand extends PlayerCommand {
 		);
 
 		if (args.length == 1) {
-			return StringUtil.copyPartialMatches(args[0].toLowerCase(), completionsArg1, Collections.emptyList());
+			return StringUtil.copyPartialMatches(args[0].toLowerCase(), completionsArg1, new ArrayList<>());
 		}
 
 		if (args.length == 2) {
-			return StringUtil.copyPartialMatches(args[1].toLowerCase(), completionsArg2, Collections.emptyList());
+			return StringUtil.copyPartialMatches(args[1].toLowerCase(), completionsArg2, new ArrayList<>());
 		}
 
 		if (
@@ -232,7 +231,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 			args[0].equalsIgnoreCase(EAOMultiverseAction.CREATE.name()) ||
 			args[0].equalsIgnoreCase(EAOMultiverseAction.FORCE_WORLD.name())
 		) {
-			return StringUtil.copyPartialMatches(args[2].toLowerCase(), completionsArg3, Collections.emptyList());
+			return StringUtil.copyPartialMatches(args[2].toLowerCase(), completionsArg3, new ArrayList<>());
 		}
 
 		return new ArrayList<>();

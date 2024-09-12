@@ -64,9 +64,9 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			.wire(wirer -> {
 				this.aoCore.getLogger().logDebug("Successfully loaded " + wirer.getInstancesCount() + " classes (" + ((System.nanoTime() - beginTimestamp) / 1000 / 1000) + "ms)");
 				
-				if (
+				/*if (
 					this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null
-				) //this.aoCore.initPlaceholderAPI(new Placeholder(this));
+				) //this.aoCore.initPlaceholderAPI(new Placeholder(this));*/
 				
 				this.multiverseWorldDao = new MultiverseWorldDao(this);
 				this.multiverseWorlds = new WorldFactory(this).loadExistingWorlds();

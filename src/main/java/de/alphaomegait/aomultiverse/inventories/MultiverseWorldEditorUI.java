@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class MultiverseWorldEditorUI implements IInventoryProvider {
 
@@ -104,14 +105,13 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 				"edit_spawnpoint_button",
 				event -> {
 					this.multiverseWorld.setSpawnLocation(player.getLocation());
-					player.closeInventory();
-					
-					this.updateMultiverseWorld();
+					this.updateMultiverseWorld(invContents, player);
 					
 					new I18n.Builder(
 						"aomultiverse_edit_world-spawnpoint_set",
 						player
 					).setArgs(this.multiverseWorld.getSpawnLocation().toString()).hasPrefix(true).build().sendMessageAsComponent();
+					player.closeInventory();
 				}
 			)
 		);
@@ -137,23 +137,23 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 				event -> {
 					final Optional<MultiverseWorld> globalSpawn = this.multiverseWorldDao.getGlobalSpawn();
 					
-					globalSpawn.ifPresent(spawn -> {
+					globalSpawn.ifPresentOrElse(spawn -> {
 						if (!this.multiverseWorld.isHasGlobalSpawn()) {
 							new I18n.Builder(
 								"aomultiverse_edit_world-global_spawn_already_set",
 								player
 							).setArgs(spawn.getWorldName()).hasPrefix(true).build().sendMessageAsComponent();
-						} else {
-							this.multiverseWorld.setHasGlobalSpawn(! this.multiverseWorld.isHasGlobalSpawn());
-							this.updateMultiverseWorld();
-							
-							new I18n.Builder(
-								"aomultiverse_edit_world-global_spawn_set",
-								player
-							).setArgs(this.multiverseWorld.isHasGlobalSpawn() ? "✓" : "✗")
-								.hasPrefix(true)
-								.build().sendMessageAsComponent();
 						}
+					}, () -> {
+						this.multiverseWorld.setHasGlobalSpawn(! this.multiverseWorld.isHasGlobalSpawn());
+						this.updateMultiverseWorld(invContents, player);
+						
+						new I18n.Builder(
+							"aomultiverse_edit_world-global_spawn_set",
+							player
+						).setArgs(this.multiverseWorld.isHasGlobalSpawn() ? "✓" : "✗")
+							.hasPrefix(true)
+							.build().sendMessageAsComponent();
 					});
 					player.closeInventory();
 				}
@@ -262,7 +262,7 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 								size > 0
 							) Bukkit.getWorld(this.multiverseWorld.getWorldName()).getWorldBorder().setSize(size);
 							
-							this.updateMultiverseWorld();
+							this.updateMultiverseWorld(invContents, player);
 							new I18n.Builder(
 								"aomultiverse_edit_world-world_size_set",
 								player
@@ -295,7 +295,7 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 				"edit_allow_pvp_button",
 				event -> {
 					this.multiverseWorld.setAllowPVP(! this.multiverseWorld.isAllowPVP());
-					this.updateMultiverseWorld();
+					this.updateMultiverseWorld(invContents, player);
 					
 					new I18n.Builder(
 						"aomultiverse_edit_world-allowed_pvp_set",
@@ -349,8 +349,14 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 	/**
 	 * Update the multiverse world.
 	 */
-	private void updateMultiverseWorld() {
+	private void updateMultiverseWorld(
+		final @NotNull IInvContents invContents,
+		final @NotNull Player player
+	) {
+		CompletableFuture.runAsync(() -> this.multiverseWorldDao.update(this.multiverseWorld));
+		
+		this.aoMultiverse.getMultiverseWorlds().remove(this.multiverseWorld.getWorldName(), this.multiverseWorld);
 		this.aoMultiverse.getMultiverseWorlds().put(this.multiverseWorld.getWorldName(), this.multiverseWorld);
-		this.multiverseWorldDao.update(this.multiverseWorld);
+		invContents.inv().display(player);
 	}
 }

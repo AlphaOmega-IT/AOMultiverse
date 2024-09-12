@@ -1,0 +1,15 @@
+name: AOMultiverse
+version: '1.0'
+main: de.alphaomegait.aomultiverse.AOMultiverse
+api-version: '1.20'
+author: AlphaOmega-IT
+database: true
+website: https://alphaomega-it.de
+description: The plugin provides the functionality of the AOMultiverse system.
+has-open-classloader: true
+dependencies:
+  bootstrap:
+    PlaceholderAPI:
+      required: true
+      join-classpath: true
+      load: BEFORE

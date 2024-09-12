@@ -82,7 +82,7 @@ public class MultiverseWorld extends BaseEntity<MultiverseWorld> {
 	 */
     public MultiverseWorld(@NotNull World world, @NotNull EAOMultiverseWorldType worldType, @NotNull String enterPermission) {
         this.worldName = world.getName();
-        this.spawnLocation = world.getSpawnLocation();
+        this.spawnLocation = world.getSpawnLocation().toCenterLocation().add(0, 1, 0);
         this.worldSize = (long) world.getWorldBorder().getSize();
         this.worldSeed = world.getSeed();
         this.allowNether = world.getEnvironment() == World.Environment.NETHER;
