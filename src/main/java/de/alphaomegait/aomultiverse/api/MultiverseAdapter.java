@@ -3,6 +3,7 @@ package de.alphaomegait.aomultiverse.api;
 import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,13 @@ public class MultiverseAdapter implements IMultiverseAdapter {
 		return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName()))
 			.map(MultiverseWorld::getSpawnLocation);
 	}
-	
+
+	@Override
+	public boolean hasMultiverseSpawn(World world) {
+		return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(world.getName()))
+			.map(MultiverseWorld::getSpawnLocation).isPresent();
+	}
+
 	/**
 	 * Teleports the player to the global spawn location if available, otherwise to the world spawn location.
 	 * @param player The player to teleport.

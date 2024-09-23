@@ -333,7 +333,7 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 	}
 	
 	@Override
-	public IUIFilter<?> filter(
+	public IUIFilter filter(
 		final @NotNull Player player,
 		final @NotNull IInvContents invContents
 	) {

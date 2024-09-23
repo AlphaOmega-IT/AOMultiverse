@@ -1,6 +1,7 @@
 package de.alphaomegait.aomultiverse.api;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -23,6 +24,13 @@ public interface IMultiverseAdapter {
 	 * @return An Optional containing the world spawn location.
 	 */
 	Optional<Location> getWorldSpawnLocation(Player player);
+
+	/**
+	 * Retrieves a boolean for the current world.
+	 * @param world the World to check.
+	 * @return a boolean telling if there is a multiverse world or not.
+	 */
+	boolean hasMultiverseSpawn(final World world);
 	
 	/**
 	 * Teleports the player to the global spawn location if available, otherwise to the world spawn location.
