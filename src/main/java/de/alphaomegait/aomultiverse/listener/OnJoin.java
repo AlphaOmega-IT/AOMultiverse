@@ -36,11 +36,11 @@ public class OnJoin implements Listener {
 		CompletableFuture.runAsync(() -> {
 			Player player = event.getPlayer();
 			this.aoMultiverse.getMultiverseWorldDao().findAll().stream().filter(MultiverseWorld::isHasGlobalSpawn).findFirst().ifPresentOrElse(
-				multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation()),
+				multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation().clone().toCenterLocation().add(0, 1, 0)),
 				() -> this.aoMultiverse.getMultiverseWorldDao().findByName(player.getWorld().getName()).ifPresent(
-					multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation())
+					multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation().clone().toCenterLocation().add(0, 1, 0))
 				)
 			);
-		});
+		}).join();
 	}
 }

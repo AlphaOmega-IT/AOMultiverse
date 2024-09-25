@@ -104,7 +104,7 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 				).build(),
 				"edit_spawnpoint_button",
 				event -> {
-					this.multiverseWorld.setSpawnLocation(player.getLocation());
+					this.multiverseWorld.setSpawnLocation(player.getLocation().toCenterLocation());
 					this.updateMultiverseWorld(invContents, player);
 					
 					new I18n.Builder(
@@ -143,18 +143,10 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 								"aomultiverse_edit_world-global_spawn_already_set",
 								player
 							).setArgs(spawn.getWorldName()).hasPrefix(true).build().sendMessageAsComponent();
+							return;
 						}
-					}, () -> {
-						this.multiverseWorld.setHasGlobalSpawn(! this.multiverseWorld.isHasGlobalSpawn());
-						this.updateMultiverseWorld(invContents, player);
-						
-						new I18n.Builder(
-							"aomultiverse_edit_world-global_spawn_set",
-							player
-						).setArgs(this.multiverseWorld.isHasGlobalSpawn() ? "✓" : "✗")
-							.hasPrefix(true)
-							.build().sendMessageAsComponent();
-					});
+						this.changeGlobalSpawn(invContents, player);
+					}, () -> this.changeGlobalSpawn(invContents, player));
 					player.closeInventory();
 				}
 			)
@@ -353,7 +345,22 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 		final @NotNull IInvContents invContents,
 		final @NotNull Player player
 	) {
-		CompletableFuture.runAsync(() -> this.multiverseWorldDao.update(this.multiverseWorld));
+		CompletableFuture.runAsync(() -> this.multiverseWorldDao.update(this.multiverseWorld)).join();
 		invContents.inv().display(player);
+	}
+	
+	private void changeGlobalSpawn(
+		final @NotNull IInvContents invContents,
+		final @NotNull Player player
+	) {
+		this.multiverseWorld.setHasGlobalSpawn(! this.multiverseWorld.isHasGlobalSpawn());
+		this.updateMultiverseWorld(invContents, player);
+		
+		new I18n.Builder(
+			"aomultiverse_edit_world-global_spawn_set",
+			player
+		).setArgs(this.multiverseWorld.isHasGlobalSpawn() ? "✓" : "✗")
+			.hasPrefix(true)
+			.build().sendMessageAsComponent();
 	}
 }
