@@ -17,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class AOMultiverseCommand extends PlayerCommand {
 
@@ -90,7 +92,7 @@ public class AOMultiverseCommand extends PlayerCommand {
 
 		final String worldName = this.stringParameter(args, 1);
 		switch (action) {
-			case CREATE: {
+			case CREATE -> {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_CREATE_WORLD)
 				) {
@@ -98,9 +100,8 @@ public class AOMultiverseCommand extends PlayerCommand {
 					return;
 				}
 				this.create(worldName, this.enumParameterOrElse(args, 2, EAOMultiverseWorldType.class, EAOMultiverseWorldType.DEFAULT), player);
-				break;
 			}
-			case DELETE: {
+			case DELETE -> {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_DELETE_WORLD)
 				) {
@@ -109,9 +110,8 @@ public class AOMultiverseCommand extends PlayerCommand {
 				}
 
 				this.delete(worldName, player);
-				break;
 			}
-			case EDIT: {
+			case EDIT -> {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_EDIT)
 				) {
@@ -124,9 +124,8 @@ public class AOMultiverseCommand extends PlayerCommand {
 					player,
 					worldName
 				).get(player).ifPresent(ui -> ui.display(player));
-				break;
 			}
-			case FORCE_WORLD: {
+			case FORCE_WORLD -> {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_FORCE_WORLD)
 				) {
@@ -135,9 +134,8 @@ public class AOMultiverseCommand extends PlayerCommand {
 				}
 
 				this.forceWorld(worldName, this.enumParameterOrElse(args, 2, EAOMultiverseWorldType.class, EAOMultiverseWorldType.DEFAULT), player);
-				break;
 			}
-			case LOAD: {
+			case LOAD -> {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_LOAD_WORLD)
 				) {
@@ -146,33 +144,31 @@ public class AOMultiverseCommand extends PlayerCommand {
 				}
 
 				this.loadWorld(worldName, this.enumParameterOrElse(args, 2, EAOMultiverseWorldType.class, EAOMultiverseWorldType.DEFAULT), player);
-				break;
 			}
-			case TELEPORT: {
+			case TELEPORT -> {
 				if (
 					! this.permissionsSection.hasPermission(player, EAOMultiversePermissionNode.AOMULTIVERSE_TELEPORT)
 				) {
 					this.permissionsSection.sendMissingMessage(player, EAOMultiversePermissionNode.AOMULTIVERSE_TELEPORT);
 					return;
 				}
-
-				final MultiverseWorld multiverseWorld = this.aoMultiverse.getMultiverseWorlds().get(worldName);
-				if (
-					multiverseWorld == null
-				) {
-					new I18n.Builder(
-						"aomultiverse-world_does_not_exist",
-						player
-					).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
-					return;
-				}
 				
-				this.teleport(multiverseWorld, player);
-				break;
+				CompletableFuture.runAsync(() -> {
+					final Optional<MultiverseWorld> multiverseWorld = this.aoMultiverse.getMultiverseWorldDao().findByName(worldName);
+					if (
+						multiverseWorld.isEmpty()
+					) {
+						new I18n.Builder(
+							"aomultiverse-world_does_not_exist",
+							player
+						).hasPrefix(true).setArgs(worldName).build().sendMessageAsComponent();
+						return;
+					}
+					
+					this.teleport(multiverseWorld.get(), player);
+				});
 			}
-			default: {
-				this.sendHelp(player);
-			}
+			default -> this.sendHelp(player);
 		}
 	}
 

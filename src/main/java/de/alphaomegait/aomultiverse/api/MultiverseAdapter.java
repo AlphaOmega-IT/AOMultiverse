@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Represents a class that adapts teleportation functionalities in a multiverse environment.
@@ -24,13 +25,15 @@ public class MultiverseAdapter implements IMultiverseAdapter {
 	
 	/**
 	 * Retrieves the global spawn location if available.
+	 *
 	 * @return An Optional containing the global spawn location.
 	 */
-	public Optional<Location> getGlobalSpawnLocation() {
-		return aoMultiverse.getMultiverseWorlds().values().stream()
-			.filter(MultiverseWorld::isHasGlobalSpawn)
-			.map(MultiverseWorld::getSpawnLocation)
-			.findFirst();
+	public CompletableFuture<Optional<Location>> getGlobalSpawnLocation() {
+		return
+			CompletableFuture.supplyAsync(() -> this.aoMultiverse.getMultiverseWorldDao().getGlobalSpawn().stream()
+				.map(MultiverseWorld::getSpawnLocation)
+				.findFirst()
+			);
 	}
 	
 	/**
@@ -38,15 +41,23 @@ public class MultiverseAdapter implements IMultiverseAdapter {
 	 * @param player The player whose world spawn location is to be retrieved.
 	 * @return An Optional containing the world spawn location.
 	 */
-	public Optional<Location> getWorldSpawnLocation(Player player) {
-		return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName()))
-			.map(MultiverseWorld::getSpawnLocation);
+	public CompletableFuture<Optional<Location>> getWorldSpawnLocation(Player player) {
+		return
+			getGlobalSpawnLocation().thenApplyAsync(globalSpawn -> {
+				if (
+					globalSpawn.isEmpty()
+				) return this.aoMultiverse.getMultiverseWorldDao().findByName(player.getWorld().getName()).map(MultiverseWorld::getSpawnLocation);
+				
+				return globalSpawn;
+			});
 	}
 
 	@Override
-	public boolean hasMultiverseSpawn(World world) {
-		return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(world.getName()))
-			.map(MultiverseWorld::getSpawnLocation).isPresent();
+	public CompletableFuture<Boolean> hasMultiverseSpawn(World world) {
+		return
+			CompletableFuture.supplyAsync(() -> {
+				return this.aoMultiverse.getMultiverseWorldDao().findByName(world.getName()).isPresent();
+			});
 	}
 
 	/**
@@ -54,9 +65,6 @@ public class MultiverseAdapter implements IMultiverseAdapter {
 	 * @param player The player to teleport.
 	 */
 	public void teleportToSpawn(Player player) {
-		getGlobalSpawnLocation().ifPresentOrElse(
-			player::teleportAsync,
-			() -> getWorldSpawnLocation(player).ifPresent(player::teleportAsync)
-		);
+		getWorldSpawnLocation(player).thenAcceptAsync((oWorld -> oWorld.ifPresent(player::teleportAsync)));
 	}
 }

@@ -17,7 +17,7 @@ translations:
       - '<red>AOMultiverse</red> <dark_red>|</dark_red> <gray>'
     en:
       - '<red>AOMultiverse</red> <dark_red>|</dark_red> <gray>'
-  aomultiverse-already_exists:
+  aomultiverse-world_already_exists:
     de:
       - '<gray>Die Welt</gray> <yellow>{0}</yellow> <gray>existiert bereits.</gray>'
     en:

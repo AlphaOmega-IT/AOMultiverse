@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Represents the command for handling player spawn-related actions.
@@ -49,28 +49,19 @@ public class AOSpawnCommand extends PlayerCommand {
         }
 
         new I18n.Builder("aospawn-spawn_will_be_located", player).hasPrefix(true).build().sendMessageAsComponent();
-
-        teleportToSpawn(player);
+	    
+	    CompletableFuture.runAsync(() -> {
+		    this.aoMultiverse.getMultiverseWorldDao().findAll().stream().filter(MultiverseWorld::isHasGlobalSpawn).findFirst().ifPresentOrElse(
+			    multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation()),
+			    () -> this.aoMultiverse.getMultiverseWorldDao().findByName(player.getWorld().getName()).ifPresent(
+				    multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation())
+			    )
+		    );
+	    });
     }
 
     @Override
     protected List<String> onTabComplete(CommandSender commandSender, String label, String[] args) {
         return new ArrayList<>();
-    }
-
-    private void teleportToSpawn(Player player) {
-        getSpawnLocation(player).ifPresentOrElse(
-                world -> player.teleportAsync(world.getSpawnLocation()),
-                () -> getWorldSpawnLocation(player).ifPresent((multiverseWorld) -> player.teleportAsync(multiverseWorld.getSpawnLocation())));
-    }
-
-    private Optional<MultiverseWorld> getWorldSpawnLocation(Player player) {
-        return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName()));
-    }
-
-    private Optional<MultiverseWorld> getSpawnLocation(Player player) {
-        return aoMultiverse.getMultiverseWorlds().values().stream()
-                .filter(MultiverseWorld::isHasGlobalSpawn)
-                .findFirst();
     }
 }

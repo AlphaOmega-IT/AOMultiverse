@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Represents a listener for player join events.
@@ -33,38 +33,14 @@ public class OnJoin implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerSpawn(final @NotNull PlayerSpawnLocationEvent event) {
-		Player player = event.getPlayer();
-		teleportToGlobalSpawn(player);
-	}
-	
-	/**
-	 * Teleports the player to the global spawn location if available.
-	 * @param player The player to teleport.
-	 */
-	private void teleportToGlobalSpawn(Player player) {
-		getGlobalSpawnWorld().ifPresentOrElse(
-			multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation()),
-			() -> teleportToWorldSpawn(player));
-	}
-	
-	/**
-	 * Teleports the player to the world spawn location if available.
-	 * @param player The player to teleport.
-	 */
-	private void teleportToWorldSpawn(Player player) {
-		MultiverseWorld multiverseWorld = this.aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName());
-		if (multiverseWorld != null) {
-			player.teleportAsync(multiverseWorld.getSpawnLocation());
-		}
-	}
-	
-	/**
-	 * Retrieves the first world with a global spawn location.
-	 * @return An Optional containing the MultiverseWorld with a global spawn location, if found.
-	 */
-	private Optional<MultiverseWorld> getGlobalSpawnWorld() {
-		return this.aoMultiverse.getMultiverseWorlds().values().stream()
-			.filter(MultiverseWorld::isHasGlobalSpawn)
-			.findFirst();
+		CompletableFuture.runAsync(() -> {
+			Player player = event.getPlayer();
+			this.aoMultiverse.getMultiverseWorldDao().findAll().stream().filter(MultiverseWorld::isHasGlobalSpawn).findFirst().ifPresentOrElse(
+				multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation()),
+				() -> this.aoMultiverse.getMultiverseWorldDao().findByName(player.getWorld().getName()).ifPresent(
+					multiverseWorld -> player.teleportAsync(multiverseWorld.getSpawnLocation())
+				)
+			);
+		});
 	}
 }

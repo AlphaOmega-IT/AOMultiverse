@@ -106,7 +106,6 @@ public class WorldFactory {
 			try {
 				final MultiverseWorld multiverseWorld = new MultiverseWorld(worldCreated, worldType);
 				this.aoMultiverse.getMultiverseWorldDao().create(multiverseWorld);
-				this.aoMultiverse.getMultiverseWorlds().put(multiverseWorld.getWorldName(), multiverseWorld);
 				
 				new I18n.Builder("aomultiverse-world_created", player)
 					.hasPrefix(true)
@@ -218,7 +217,7 @@ public class WorldFactory {
 	public Map<String, MultiverseWorld> loadExistingWorlds() {
 		this.aoMultiverse.getAoCore().getLogger().logInfo("Loading existing worlds...");
 		
-		final String regex = "^[a-z0-9/._-]+$";
+		final String regex = "^[a-zA-Z0-9/._-]+$";
 		
 		final Map<String, MultiverseWorld> multiverseWorlds = new HashMap<>();
 		this.aoMultiverse.getMultiverseWorldDao().findAll().forEach(multiverseWorld -> {
@@ -241,7 +240,7 @@ public class WorldFactory {
 					Material.IRON_BLOCK
 				)).biomeProvider(new PlotBiomeProvider());
 				
-				worldCreator.createWorld();
+				final World world = worldCreator.createWorld();
 				this.aoMultiverse.getAoCore().getLogger().logInfo("Loaded world: " + multiverseWorld.getWorldName() + " with type: " + multiverseWorld.getWorldType());
 				
 				multiverseWorlds.put(multiverseWorld.getWorldName(), multiverseWorld);

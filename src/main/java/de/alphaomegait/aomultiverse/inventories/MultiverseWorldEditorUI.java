@@ -354,9 +354,6 @@ public class MultiverseWorldEditorUI implements IInventoryProvider {
 		final @NotNull Player player
 	) {
 		CompletableFuture.runAsync(() -> this.multiverseWorldDao.update(this.multiverseWorld));
-		
-		this.aoMultiverse.getMultiverseWorlds().remove(this.multiverseWorld.getWorldName(), this.multiverseWorld);
-		this.aoMultiverse.getMultiverseWorlds().put(this.multiverseWorld.getWorldName(), this.multiverseWorld);
 		invContents.inv().display(player);
 	}
 }

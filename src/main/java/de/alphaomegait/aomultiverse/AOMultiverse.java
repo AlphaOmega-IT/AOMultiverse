@@ -7,7 +7,6 @@ import de.alphaomegait.aomultiverse.api.MultiverseAdapter;
 import de.alphaomegait.aomultiverse.commands.aomultiverse.AOMultiverseCommand;
 import de.alphaomegait.aomultiverse.commands.spawn.AOSpawnCommand;
 import de.alphaomegait.aomultiverse.database.daos.MultiverseWorldDao;
-import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import de.alphaomegait.aomultiverse.listener.OnJoin;
 import de.alphaomegait.aomultiverse.listener.OnRespawn;
 import de.alphaomegait.aomultiverse.utilities.WorldFactory;
@@ -18,9 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 
 	private AOCore aoCore;
@@ -28,8 +24,6 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	private MultiverseWorldDao multiverseWorldDao;
 	
 	private MultiverseAdapter multiverseAdapter;
-	
-	private Map<String, MultiverseWorld> multiverseWorlds = new ConcurrentHashMap<>();
 
 	@Override
 	public void onLoad() {
@@ -46,7 +40,6 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			.addSingleton(AOInventoryEvents.class)
 			.addSingleton(AOMultiverseCommand.class)
 			.addSingleton(AOSpawnCommand.class)
-			.addSingleton(MultiverseWorldDao.class)
 			.addSingleton(OnRespawn.class)
 			.addSingleton(OnJoin.class)
 			.addInstantiationListener(
@@ -64,14 +57,16 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 			.wire(wirer -> {
 				this.aoCore.getLogger().logDebug("Successfully loaded " + wirer.getInstancesCount() + " classes (" + ((System.nanoTime() - beginTimestamp) / 1000 / 1000) + "ms)");
 				
-				/*if (
-					this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null
-				) //this.aoCore.initPlaceholderAPI(new Placeholder(this));*/
-				
 				this.multiverseWorldDao = new MultiverseWorldDao(this.aoCore);
-				this.multiverseWorlds = new WorldFactory(this).loadExistingWorlds();
+				new WorldFactory(this).loadExistingWorlds();
 			});
 	}
+	
+	@Override
+	public void onDisable() {
+		this.aoCore.disable();
+	}
+	
 	@Override
 	public String[] getConfigPaths() {
 		return new String[]{
@@ -87,10 +82,6 @@ public class AOMultiverse extends JavaPlugin implements IConfigPathsProvider {
 	
 	public MultiverseWorldDao getMultiverseWorldDao() {
 		return this.multiverseWorldDao;
-	}
-	
-	public Map<String, MultiverseWorld> getMultiverseWorlds() {
-		return this.multiverseWorlds;
 	}
 	
 	public MultiverseAdapter getMultiverseAdapter() {

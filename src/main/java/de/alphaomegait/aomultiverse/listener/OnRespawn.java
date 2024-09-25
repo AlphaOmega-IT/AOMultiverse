@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Listens for player respawn events and sets the respawn location based on the configured worlds.
  */
@@ -31,20 +33,14 @@ public class OnRespawn implements Listener {
 	 */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(final @NotNull PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-
-        for (MultiverseWorld world : this.aoMultiverse.getMultiverseWorlds().values()) {
-            if (world.isHasGlobalSpawn()) {
-                event.setRespawnLocation(world.getSpawnLocation());
-	            this.aoMultiverse.getAoCore().getLogger().logDebug("Setting respawn location for player " + player.getName() + " to " + world.getSpawnLocation());
-                return;
-            }
-        }
-
-        MultiverseWorld multiverseWorld = this.aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName());
-        if (multiverseWorld != null) {
-            event.setRespawnLocation(multiverseWorld.getSpawnLocation());
-	        this.aoMultiverse.getAoCore().getLogger().logDebug("Setting respawn location for player " + player.getName() + " to " + multiverseWorld.getSpawnLocation());
-        }
+	    CompletableFuture.runAsync(() -> {
+		    Player player = event.getPlayer();
+		    this.aoMultiverse.getMultiverseWorldDao().findAll().stream().filter(MultiverseWorld::isHasGlobalSpawn).findFirst().ifPresentOrElse(
+			    multiverseWorld -> event.setRespawnLocation(multiverseWorld.getSpawnLocation()),
+			    () -> this.aoMultiverse.getMultiverseWorldDao().findByName(player.getWorld().getName()).ifPresent(
+				    multiverseWorld -> event.setRespawnLocation(multiverseWorld.getSpawnLocation())
+			    )
+		    );
+	    });
     }
 }
