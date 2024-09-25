@@ -32,35 +32,35 @@ import org.jetbrains.annotations.NotNull;
 @SequenceGenerator(allocationSize = 1, name = "SQ_GEN_HIBERNATE", sequenceName = "SQ_GEN_HIBERNATE")
 public class MultiverseWorld extends BaseEntity<MultiverseWorld> {
 	
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "world_name")
     private String worldName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "world_type")
     private String worldType;
 
     @Convert(converter = LocationConverter.class)
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Column(nullable = false, columnDefinition = "LONGTEXT", name = "spawn_location")
     private Location spawnLocation;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "world_size")
     private Long worldSize;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "world_seed")
     private Long worldSeed;
 
-    @Column(nullable = false)
-    private boolean allowNether;
+    @Column(nullable = false, name = "allow_nether")
+    private boolean allowNether = false;
 
-    @Column(nullable = false)
-    private boolean allowTheEnd;
+    @Column(nullable = false, name = "allow_the_end")
+    private boolean allowTheEnd = false;
 
-    @Column(nullable = false)
-    private boolean allowPVP;
+    @Column(nullable = false, name = "allow_pvp")
+    private boolean allowPVP = false;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "has_global_spawn")
     private boolean hasGlobalSpawn;
 
-    @Column
+    @Column(name = "enter_permission")
     private String enterPermission;
 
     public MultiverseWorld() {}

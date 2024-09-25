@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 /**
  * A class responsible for creating, deleting, and managing worlds in the multiverse.
@@ -217,28 +218,37 @@ public class WorldFactory {
 	public Map<String, MultiverseWorld> loadExistingWorlds() {
 		this.aoMultiverse.getAoCore().getLogger().logInfo("Loading existing worlds...");
 		
+		final String regex = "[a-z0-9/._-]";
+		
 		final Map<String, MultiverseWorld> multiverseWorlds = new HashMap<>();
 		this.aoMultiverse.getMultiverseWorldDao().findAll().forEach(multiverseWorld -> {
-			WorldCreator worldCreator = new WorldCreator(multiverseWorld.getWorldName()).keepSpawnLoaded(TriState.TRUE);
 			if (
-				multiverseWorld.getWorldType().equalsIgnoreCase(EAOMultiverseWorldType.VOID.name())
-			) worldCreator.generator(new VoidChunkGenerator()).biomeProvider(new VoidBiomeProvider());
-			
-			if (
-				multiverseWorld.getWorldType().equalsIgnoreCase(EAOMultiverseWorldType.PLOT.name())
-			) worldCreator.generator(new PlotChunkGenerator(
-				30,
-				6,
-				30,
-				Material.STONE,
-				Material.COBBLESTONE_SLAB,
-				Material.IRON_BLOCK
-			)).biomeProvider(new PlotBiomeProvider());
-			
-			worldCreator.createWorld();
-			this.aoMultiverse.getAoCore().getLogger().logInfo("Loaded world: " + multiverseWorld.getWorldName() + " with type: " + multiverseWorld.getWorldType());
-			
-			multiverseWorlds.put(multiverseWorld.getWorldName(), multiverseWorld);
+				Pattern.compile(regex).matcher(multiverseWorld.getWorldName()).matches()
+			) {
+				WorldCreator worldCreator = new WorldCreator(multiverseWorld.getWorldName()).keepSpawnLoaded(TriState.TRUE);
+				if (
+					multiverseWorld.getWorldType().equalsIgnoreCase(EAOMultiverseWorldType.VOID.name())
+				) worldCreator.generator(new VoidChunkGenerator()).biomeProvider(new VoidBiomeProvider());
+				
+				if (
+					multiverseWorld.getWorldType().equalsIgnoreCase(EAOMultiverseWorldType.PLOT.name())
+				) worldCreator.generator(new PlotChunkGenerator(
+					30,
+					6,
+					30,
+					Material.STONE,
+					Material.COBBLESTONE_SLAB,
+					Material.IRON_BLOCK
+				)).biomeProvider(new PlotBiomeProvider());
+				
+				worldCreator.createWorld();
+				this.aoMultiverse.getAoCore().getLogger().logInfo("Loaded world: " + multiverseWorld.getWorldName() + " with type: " + multiverseWorld.getWorldType());
+				
+				multiverseWorlds.put(multiverseWorld.getWorldName(), multiverseWorld);
+			} else
+				this.aoMultiverse.getAoCore().getLogger().logInfo(
+					"Could not load world: " + multiverseWorld.getWorldName() + " due not accepting following regex: " + regex
+				);
 		});
 		
 		return multiverseWorlds;

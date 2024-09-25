@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,19 +55,17 @@ public class AOSpawnCommand extends PlayerCommand {
 
     @Override
     protected List<String> onTabComplete(CommandSender commandSender, String label, String[] args) {
-        return Collections.emptyList();
+        return new ArrayList<>();
     }
 
     private void teleportToSpawn(Player player) {
         getSpawnLocation(player).ifPresentOrElse(
                 world -> player.teleportAsync(world.getSpawnLocation()),
-                () -> player.teleportAsync(getWorldSpawnLocation(player).getSpawnLocation())
-        );
+                () -> getWorldSpawnLocation(player).ifPresent((multiverseWorld) -> player.teleportAsync(multiverseWorld.getSpawnLocation())));
     }
 
-    private MultiverseWorld getWorldSpawnLocation(Player player) {
-        return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName()))
-                .orElseThrow(() -> new IllegalStateException("World spawn location not found for player"));
+    private Optional<MultiverseWorld> getWorldSpawnLocation(Player player) {
+        return Optional.ofNullable(aoMultiverse.getMultiverseWorlds().get(player.getWorld().getName()));
     }
 
     private Optional<MultiverseWorld> getSpawnLocation(Player player) {

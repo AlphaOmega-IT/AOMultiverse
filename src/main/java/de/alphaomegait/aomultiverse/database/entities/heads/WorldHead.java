@@ -24,7 +24,7 @@ public class WorldHead extends AOHead<WorldHead> {
 	
 	@Override
 	public List<String> getHeadDescription(@NotNull String s) {
-		return Collections.emptyList();
+		return new ArrayList<>();
 	}
 	
 	@Override

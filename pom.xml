@@ -85,7 +85,7 @@
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.6.0.Final</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- MySQL -->
@@ -101,7 +101,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.1.214</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- ConfigMapper -->
@@ -141,7 +141,7 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- AOCore of AlphaOmega-IT -->

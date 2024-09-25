@@ -1,7 +1,7 @@
 package de.alphaomegait.aomultiverse.database.daos;
 
+import de.alphaomegait.aocore.AOCore;
 import de.alphaomegait.aocore.database.daos.BaseDao;
-import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,10 +16,10 @@ public class MultiverseWorldDao extends BaseDao<MultiverseWorld> {
 	/**
 	 * Constructs a new MultiverseWorldDao instance.
 	 *
-	 * @param aoMultiverse The AOMultiverse instance to use for database operations.
+	 * @param aoCore The AOCore instance to use for database operations.
 	 */
-	public MultiverseWorldDao(final @NotNull AOMultiverse aoMultiverse) {
-		super(aoMultiverse.getAoCore(), MultiverseWorld.class);
+	public MultiverseWorldDao(final @NotNull AOCore aoCore) {
+		super(aoCore, MultiverseWorld.class);
 	}
 	
 	/**

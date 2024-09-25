@@ -6,9 +6,20 @@ author: AlphaOmega-IT
 database: true
 website: https://alphaomega-it.de
 description: The plugin provides the functionality of the AOMultiverse system.
+libraries:
+  - org.hibernate.orm:hibernate-core:6.6.0.Final
+  - com.mysql:mysql-connector-j:9.0.0
+  - com.h2database:h2:2.1.214
+  - org.reflections:reflections:0.9.12
+  - jakarta.persistence:jakarta.persistence-api:3.2.0
+loadBefore: [AOOneblock]
 has-open-classloader: true
 dependencies:
   bootstrap:
+    AOOneblock:
+      required: false
+      join-classpath: true
+      load: BEFORE
     PlaceholderAPI:
       required: true
       join-classpath: true
