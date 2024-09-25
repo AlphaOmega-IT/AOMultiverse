@@ -2,6 +2,7 @@ package de.alphaomegait.aomultiverse.api;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -22,10 +23,10 @@ public interface IMultiverseAdapter {
 	
 	/**
 	 * Retrieves the spawn location for the player's current world.
-	 * @param player The player whose world spawn location is to be retrieved.
+	 * @param entity The entity whose world spawn location is to be retrieved.
 	 * @return An Optional containing the world spawn location.
 	 */
-	CompletableFuture<Optional<Location>> getWorldSpawnLocation(Player player);
+	CompletableFuture<Optional<Location>> getWorldSpawnLocation(Entity entity);
 
 	/**
 	 * Retrieves a boolean for the current world.

@@ -4,6 +4,7 @@ import de.alphaomegait.aomultiverse.AOMultiverse;
 import de.alphaomegait.aomultiverse.database.entities.MultiverseWorld;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,15 +39,15 @@ public class MultiverseAdapter implements IMultiverseAdapter {
 	
 	/**
 	 * Retrieves the spawn location for the player's current world.
-	 * @param player The player whose world spawn location is to be retrieved.
+	 * @param entity The entity whose world spawn location is to be retrieved.
 	 * @return An Optional containing the world spawn location.
 	 */
-	public CompletableFuture<Optional<Location>> getWorldSpawnLocation(Player player) {
+	public CompletableFuture<Optional<Location>> getWorldSpawnLocation(Entity entity) {
 		return
 			getGlobalSpawnLocation().thenApplyAsync(globalSpawn -> {
 				if (
 					globalSpawn.isEmpty()
-				) return this.aoMultiverse.getMultiverseWorldDao().findByName(player.getWorld().getName()).map(MultiverseWorld::getSpawnLocation);
+				) return this.aoMultiverse.getMultiverseWorldDao().findByName(entity.getWorld().getName()).map(MultiverseWorld::getSpawnLocation);
 				
 				return globalSpawn;
 			});
